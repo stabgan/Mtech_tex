@@ -1,0 +1,31 @@
+\chapter{Conclusions and Future Work}\label{chap:conclusion}
+
+\section{Summary of Work}
+This thesis successfully designed, implemented, and validated a trustworthy machine learning framework for early mortality prediction in Sepsis-Associated Acute Kidney Injury (SA--AKI), establishing a new, methodologically robust benchmark for the field. By strictly adhering to a 24-hour clinical window and the TRIPOD reporting guidelines, this work provides a transparent and reproducible pipeline that addresses the critical flaws of data leakage and overestimation prevalent in much of the existing literature.
+
+The key contributions and findings are summarized as follows:
+\begin{enumerate}
+    \item \textbf{High-Fidelity Cohort Construction:} A well-defined SA--AKI cohort of 10,036 patients was meticulously constructed from the MIMIC--IV database, underpinned by an ontology-integrated PostgreSQL warehouse that ensured reproducible definitions and data harmonization.
+
+    \item \textbf{Leakage-Aware Preprocessing:} A rigorous 80/20 train-test split was the foundation for a novel preprocessing pipeline. This pipeline included a formal analysis of the missing data mechanism, the creation and statistical selection of significant missingness indicators as novel features, and the strict train-only fitting of all data transformers to prevent information leakage.
+
+    \item \textbf{Robust and Interpretable Predictive Modeling:} After a comprehensive benchmark of machine learning algorithms, a LightGBM model was selected, tuned, and calibrated. On the held-out test set, this final model achieved an AUROC of 0.749 and an F1-score of 0.522, demonstrating strong and generalizable discriminative power. The clinical validity of the model was confirmed through SHAP analysis, which revealed that its predictions were driven by established risk factors such as SOFA score, RDW, and age.
+
+    \item \textbf{Dynamic Risk Assessment with Survival Analysis:} The utility of the early-window features was extended to time-to-event modeling. Both a Cox Proportional Hazards model and a custom DeepSurv model were developed, each achieving a strong C-index of approximately 0.69 on the test set. These models proved effective at stratifying patients into distinct risk groups over time, providing a more dynamic view of clinical risk.
+\end{enumerate}
+
+In essence, this work provides a complete, end-to-end framework that not only yields a high-performing and clinically interpretable predictive model but also champions the methodological rigor required to build trustworthy clinical decision support tools suitable for real-world application.
+
+\section{Future Work}
+Building upon the robust foundation established in this thesis, several avenues for future research are proposed:
+\begin{itemize}
+    \item \textbf{External Validation and Transportability:} The immediate next step is to evaluate the model's performance on external datasets, such as the eICU Collaborative Research Database or other institutional EHR data. This will be crucial for assessing its generalizability and transportability across different hospital systems and patient populations.
+
+    \item \textbf{Synthetic Data Augmentation via Monte Carlo Methods:} To address the limitations of a single-center dataset and to stress-test model robustness, Monte Carlo simulation methods could be employed to generate synthetic patient records. Specifically, parametric bootstrap or copula-based simulation could sample from the estimated joint distribution of the T0--T24 feature space (preserving inter-feature correlations and the marginal distributions observed in the training data) to produce large synthetic cohorts. These synthetic datasets could serve multiple purposes: (i) sensitivity analysis to assess how model performance degrades under distributional shifts (e.g., simulating a population with higher baseline creatinine or different comorbidity prevalence), (ii) augmentation of underrepresented subgroups to improve fairness, and (iii) privacy-preserving data sharing for external collaboration. More advanced generative approaches such as conditional tabular GANs (CTGAN) or variational autoencoders could also be explored, though careful validation against the real data distribution would be essential to ensure that synthetic records are clinically plausible.
+
+    \item \textbf{Exploration of Different Temporal Windows:} While this study focused on a 24-hour window, future work could investigate the predictive power of even earlier windows (e.g., 6 or 12 hours) to facilitate more timely interventions, or later windows (e.g., 48 hours) to capture evolving patient trajectories.
+
+    \item \textbf{Model Fairness and Equity Audit:} A critical step before any clinical deployment is to conduct a thorough audit of the model's performance across different demographic subgroups (e.g., by sex, age, and ethnicity) to ensure its predictions are equitable and to identify and mitigate any potential biases.
+
+    \item \textbf{Prospective Clinical Impact Study:} The ultimate goal is to translate this research into clinical practice. A prospective, observational study could be designed to deploy the model in a real-world ICU setting as a decision support tool, allowing for the evaluation of its impact on clinical workflows, decision-making, and ultimately, patient outcomes.
+\end{itemize}

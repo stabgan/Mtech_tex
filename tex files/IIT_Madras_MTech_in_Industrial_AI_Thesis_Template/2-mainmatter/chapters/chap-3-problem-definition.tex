@@ -1,0 +1,99 @@
+\chapter{Problem Definition and Formulation}
+\label{chap:problem}
+
+\section{Clinical decision and scope}
+Sepsis–associated acute kidney injury (SA--AKI) constitutes a high–risk state coupling infection, shock physiology, and acute renal dysfunction. The \emph{decision point} is fixed: at the end of the first ICU day ($T_{\mathrm{obs}}{=}24$~h after ICU admission), the risk of in–hospital death is to be estimated for patients meeting SA--AKI criteria using only information available by $T_{\mathrm{obs}}$. The primary goal is to develop a predictive model that is both \emph{discriminative} and \emph{calibrated}. Two auxiliary objectives support this decision: (i) systematic \emph{exploratory data analysis} to discover clinical phenotypes in the early feature space, and (ii) \emph{time–to–event} modeling that translates the same early covariates into survival functions for \emph{time to death}. All cohort rules adhere to Sepsis--3 for sepsis and KDIGO for AKI, and reporting follows the TRIPOD statement.
+
+\noindent\textbf{Out of scope.} This study does not estimate causal treatment effects or recommend specific therapies. The problem is predictive; models summarize risk conditional on the information set $\mathcal{I}(T_{\mathrm{obs}})$.
+
+\section{Observational unit, clocks, and information sets}
+Each observational unit corresponds to the \emph{first} eligible ICU admission for a patient in the SA--AKI cohort. Let ICU admission be $t{=}0$ and define the early feature window as
+\[
+[0,\,T_{\mathrm{obs}}], \qquad T_{\mathrm{obs}}=24~\text{hours}.
+\]
+All time–varying signals in this window—vital signs, laboratory measurements, fluids/urine output, and early therapies—are summarized by deterministic, leakage–safe functionals into a feature vector
+\[
+x_i \in \mathbb{R}^p,
+\]
+augmented with static demographics and comorbidity indicators. For the binary classification task, a one–time stratified 80/20 train–test split yielded training and test sets with $(8028, 162)$ and $(2008, 162)$ dimensions, respectively (including the target column). The positive (death) rate in the training set was $26.74\%$. The survival analysis used the same patient split with a feature matrix of $(8028, 124)$ and $(2008, 124)$ before the inclusion of time and event columns.\footnote{These dataset sizes and event fractions reflect the final data preparation used in model building and survival analysis, as detailed in the notebooks.}
+The available information for patient $i$ at the decision time is the $\sigma$–field
+\[
+\mathcal{I}_i(T_{\mathrm{obs}})=\{\text{EHR observations with time stamp}\le T_{\mathrm{obs}}\}.
+\]
+\emph{Temporal discipline.} Any statistic requiring $t>T_{\mathrm{obs}}$ (e.g., total ICU length of stay, whole–stay extrema/means, post–baseline therapies) is deemed inadmissible for prediction and is excluded by a scripted leakage audit.
+
+\paragraph{Target population and case definition.}
+Sepsis is operationalized by Sepsis--3 (suspected infection plus a daily SOFA score increase of $\ge 2$); AKI is defined by KDIGO serum–creatinine and urine–output criteria. SA--AKI requires AKI onset within $\pm48$~h of sepsis onset. Only adults ($\ge$18~y) with an ICU length of stay $\ge$24~h, and only the first ICU stay per patient, are included. Cohort definition timestamps $t_{\text{sepsis}}$ and $t_{\text{aki}}$ serve only to identify the cohort and \emph{are not used as predictors}.
+
+\section{Data–generating view and notation}
+Let $(X,Y,T^{\mathrm{death}},\delta^{\mathrm{death}})\sim P$ on
+\[
+\mathcal{X}\times\{0,1\}\times\mathbb{R}_+\times\{0,1\},
+\]
+where $X$ is the T0--T24 feature vector; $Y$ is in–hospital death (1/0); $T^{\mathrm{death}}$ is time from ICU admission to in–hospital death or censoring at discharge; and $\delta^{\mathrm{death}}$ is the event indicator (1=death, 0=censored). Independent, identically distributed samples $\{(x_i,\cdot)\}_{i=1}^n$ are observed. A one–time \emph{80/20} split yields $(\mathcal{D}_{\mathrm{train}},\mathcal{D}_{\mathrm{test}})$. Any internal validation split for tasks like hyperparameter tuning or calibration is carved out exclusively \emph{from within} $\mathcal{D}_{\mathrm{train}}$. The survival analysis reuses the same patient split with right censoring.
+
+\section{Problem 1 (Unsupervised): Exploratory Analysis and Phenotyping}
+\textbf{Goal.} To systematically explore the early feature space of the training data to identify clinically relevant patient phenotypes without using outcome labels. This involves analyzing the distributions of key biomarkers, assessing correlations between features and the mortality outcome, and comparing clinical characteristics (e.g., vital signs, lab values, SOFA components) between patients who survived and those who did not. This exploratory phase informs feature importance and provides clinical context for the supervised models.
+
+\section{Problem 2 (Supervised, Primary): Early–Window Mortality Risk}
+\subsection{Label and objective}
+Define the binary label
+\[
+Y=\mathbb{I}\{\text{in–hospital death prior to discharge}\}.
+\]
+A probabilistic classifier $f_{\theta}:\mathcal{X}\to[0,1]$ is sought such that
+\[
+\hat p(x)=f_{\theta}(x)\approx \Pr(Y=1\mid X=x,\ \mathcal{I}(T_{\mathrm{obs}})).
+\]
+The learning criterion on training data is the average negative log–likelihood (cross-entropy),
+\[
+\hat\theta\in\arg\min_{\theta}\;\frac{1}{m}\sum_{j=1}^{m}
+\big\{-y_j\log f_{\theta}(x_j)-(1-y_j)\log(1-f_{\theta}(x_j))\big\},
+\]
+optimized using cross–validation within $\mathcal{D}_{\mathrm{train}}$.
+
+\subsection{Performance targets}
+Two properties are co–primary:
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Discrimination:} High Area Under the Receiver Operating Characteristic Curve (AUROC) and F1-score on the held-out test set.
+  \item \textbf{Calibration:} Reliable probabilities, assessed by generating a final calibrated model and evaluating its performance.
+\end{enumerate}
+Calibration is performed on a validation split drawn from $\mathcal{D}_{\mathrm{train}}$ using isotonic regression; final probabilities are $\tilde p=c\circ f_{\theta}(x)$, where $c$ denotes the calibrator.
+
+\subsection{Decision rule and operating point}
+Clinical actions are thresholded via $\delta_{\tau}(x)=\mathbb{I}\{\tilde p(x)\ge \tau\}$. The optimal operating point $\tau$ is selected on an internal validation split by maximizing Youden’s $J$ index. The final model's utility across a range of thresholds is also assessed using decision-curve analysis.
+
+\subsection{Hypothesis classes and regularization}
+A spectrum of models, $\mathcal{H}$, is benchmarked to assess performance across different functional capacities: Logistic Regression (with and without class weights, and with various resampling techniques), regularized models (Ridge, Lasso, ElasticNet), Linear and Quadratic Discriminant Analysis (LDA/QDA), Gaussian Naive Bayes, Decision Tree, Random Forest, gradient-boosted trees (XGBoost, LightGBM), and a deep neural network (DNN++). Hyperparameters for tree-based models are tuned using the Optuna framework within training folds.
+
+\subsection{Interpretability requirement}
+For the final selected model ($f_{\theta}$), feature contributions are explained using SHapley Additive exPlanations (SHAP). This provides both global feature importance rankings and local, instance-level explanations for individual patient predictions, satisfying the need for model transparency.
+
+\paragraph{Constraints and guardrails.}
+(i) \emph{Temporal:} All predictive features are derived strictly from the $[0,24]$\,h window post-ICU admission. (ii) \emph{Independence:} Only the first ICU stay per patient is included. (iii) \emph{Siloed preprocessing:} All data transformations (imputation, scaling, indicator creation) are learned on the training set and applied without modification to the test set. (iv) \emph{No peeking:} The test set is held out and used only for a single final evaluation. (v) \emph{Cohort times not used as predictors:} $t_{\text{sepsis}}$ and $t_{\text{aki}}$ are used only for case definition.
+
+\section{Problem 3 (Survival): Early–Covariate Time to Death}
+Using the same T0--T24 covariates, the \emph{time to in–hospital death} is modeled with right censoring at hospital discharge. For the event time data $(T^{\mathrm{death}},\delta^{\mathrm{death}})$, the conditional hazard function $h(t\mid x)$ is estimated via:
+\begin{itemize}
+  \item \textbf{Cox Proportional Hazards (PH):} A semi-parametric model specified as $h(t\mid x)=h_0(t)\exp\{\beta^\top x\}$, implemented with the `lifelines` library. Proportional hazards assumptions are checked.
+  \item \textbf{DeepSurv:} A neural network-based Cox model where $h(t\mid x)=h_0(t)\exp\{g_{\psi}(x)\}$, with $g_\psi$ parameterized by a custom deep network implemented in PyTorch.
+\end{itemize}
+Performance is evaluated using Harrell’s $C$–index, time-dependent AUC, calibration plots at clinically relevant horizons (e.g., 7, 14, 28 days), and Kaplan-Meier curve stratification by predicted risk.
+
+\section{Evaluation protocol}
+For the classification task, a one–time 80/20 train–test split is used. An internal validation split is carved from the training set for model selection, calibration, and thresholding. The frozen pipeline is then applied once to the test set. For the survival task, the same patient partitions are used. Primary test metrics for the classifier include AUROC, F1-score, precision, and recall. For the survival models, primary metrics are Harrell’s $C$-index, calibration, and risk stratification confirmed by the log-rank test.
+
+\section{Assumptions and risks}
+\begin{itemize}
+  \item \textbf{Availability:} All predictors are assumed to be observable by $T_{\mathrm{obs}}$; features with excessive missingness or not typically available early are excluded.
+  \item \textbf{Measurement:} Units are harmonized and physiological plausibility is enforced. The missing data mechanism is assumed to be Missing at Random (MAR) after finding it is not Missing Completely at Random (MCAR), justifying the use of imputation and missingness indicators.
+  \item \textbf{Domain:} Models are developed on the MIMIC--IV dataset; transportability to external centers may require recalibration.
+  \item \textbf{Predictive, not causal:} The models identify predictive associations, not causal relationships.
+\end{itemize}
+
+\section{Compact statement of aims}
+\noindent\textbf{Aim\,A (Phenotyping).} To conduct a thorough exploratory data analysis on the T0--T24 training data to identify and visualize the key clinical characteristics and phenotypes that differ between survivors and non-survivors.
+
+\noindent\textbf{Aim\,B (Primary classifier).} To train and validate a calibrated probabilistic model for in–hospital death, $\tilde p(x)=c\circ f_{\theta}(x)$, ensuring high discrimination and utility through a strict, leakage-controlled pipeline.
+
+\noindent\textbf{Aim\,C (Survival).} Using the same early covariates, to estimate the survival function $S^{\mathrm{death}}(t\mid x)$ with Cox and DeepSurv models and evaluate their performance via C-index, calibration, and risk stratification.

@@ -1,0 +1,26 @@
+{\bfseries Table} \hfill {\bfseries Caption} \hfill {\bfseries Page}\par 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Overall cohort snapshot (final build).}}{38}{table.caption.16}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Therapy/exposure prevalence in the first 24\,h (1/0 encoding).}}{39}{table.caption.17}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces Top 10 most significant associations between missingness indicators and in-hospital mortality.}}{40}{table.caption.19}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Best performance by algorithm type from the comprehensive benchmarking experiments, sorted by ROC-AUC.}}{44}{table.caption.22}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Performance of the final calibrated LightGBM model on the held-out test set.}}{45}{table.caption.23}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {B.1}{\ignorespaces Endpoint and timing variables present in file.}}{66}{table.caption.57}%
+\contentsline {table}{\numberline {B.2}{\ignorespaces Therapy/exposure flags (definitions mirror Table~\ref {tab:therapies-prev}).}}{66}{table.caption.58}%
+\contentsline {table}{\numberline {B.3}{\ignorespaces Charlson comorbidity flags (1/0) and prevalence in cohort.}}{67}{table.caption.59}%
+\contentsline {table}{\numberline {B.4}{\ignorespaces Vital-sign base names; day-1 statistics derived via suffixes where applicable.}}{68}{table.caption.60}%
+\contentsline {table}{\numberline {B.5}{\ignorespaces Fluid balance and urine output features.}}{68}{table.caption.61}%
+\contentsline {table}{\numberline {B.6}{\ignorespaces Laboratory and gas-exchange base names (A--M).}}{69}{table.caption.62}%
+\contentsline {table}{\numberline {B.7}{\ignorespaces Laboratory and gas-exchange base names (N--Z).}}{69}{table.caption.63}%
+\contentsline {table}{\numberline {B.8}{\ignorespaces Suffix legend for time-series features.}}{70}{table.caption.64}%
+\addvspace {10\p@ }
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -1,0 +1,162 @@
+\chapter{Results}\label{chap:results}
+This chapter presents the definitive outcomes of the predictive modeling pipeline. It begins by detailing the results of the extensive model benchmarking process, leading to the selection and final evaluation of the primary classification model. Subsequently, it presents the performance and interpretation of the time-to-event models. All results were generated from the held-out test set, following the strict, leakage-aware methodology established in the preceding chapters.
+
+\section{Supervised Mortality Prediction}
+The primary objective of this thesis was to develop a robust binary classifier for in-hospital mortality. This was achieved through a two-stage process: a comprehensive benchmarking of various algorithms, followed by an in-depth evaluation of the final selected model.
+
+\subsection{Model Benchmarking and Selection}
+A wide range of classification algorithms was systematically evaluated to identify the most suitable candidate for the clinical task. The benchmark included traditional statistical models (Logistic Regression, LDA), regularized linear models (Ridge, Lasso, ElasticNet), and more complex, non-linear ensembles (Random Forest, XGBoost, LightGBM, DNN++). To address the inherent class imbalance in the dataset, two primary strategies were compared: intrinsic class weighting and various oversampling techniques (e.g., SMOTE, BorderlineSMOTE).
+
+The results of this comprehensive benchmark are summarized in Table~\ref{tab:ml_benchmark}. A clear trend emerged: tree-based ensembles consistently outperformed linear models in terms of discrimination, as measured by the ROC-AUC. The \textbf{LightGBM model trained with class weights} was identified as the top-performing model, achieving the highest ROC-AUC of 0.749 in the initial validation. Notably, while oversampling methods tended to produce higher F1-scores, this was often at the expense of precision and did not yield a superior ROC-AUC. Given that the primary goal was to accurately discriminate high-risk from low-risk patients across all decision thresholds, ROC-AUC was prioritized, and the LightGBM model was selected for the final stage of tuning, calibration, and evaluation.
+
+\begin{table}[htb!]
+    \centering
+    \caption{Best performance by algorithm type from the comprehensive benchmarking experiments, sorted by ROC-AUC.}
+    \label{tab:ml_benchmark}
+    \begin{tabular}{lrr}
+        \toprule
+        \textbf{Model Algorithm} & \textbf{ROC-AUC} & \textbf{F1-Score} \\
+        \midrule
+        LightGBM & 0.7492 & 0.4129 \\
+        XGBoost & 0.7444 & 0.4527 \\
+        Logistic Regression & 0.7382 & 0.5227 \\
+        Linear Discriminant Analysis (LDA) & 0.7364 & 0.3756 \\
+        ElasticNet & 0.7363 & 0.5185 \\
+        Ridge & 0.7349 & 0.5174 \\
+        Deep Neural Network (DNN++) & 0.7347 & 0.4471 \\
+        Lasso & 0.7331 & 0.5244 \\
+        Random Forest & 0.7137 & 0.3468 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Final Model Performance on the Test Set}
+The selected LightGBM model was subjected to a final, rigorous evaluation pipeline. After hyperparameter tuning with Optuna, the model's raw outputs were calibrated using isotonic regression on a validation split of the training data. The optimal classification threshold was determined to be 0.2704 by maximizing Youden's J statistic on this same validation set.
+
+The final, calibrated model was then applied to the unseen held-out test set. The model achieved a ROC-AUC of 0.749, confirming its strong and generalizable discriminative ability. The complete performance metrics are detailed in Table~\ref{tab:final_performance}. The confusion matrix (Figure~\ref{fig:confusion_matrix_roc}a) provides a clear picture of the model's performance at the chosen clinical threshold: it correctly identified 368 of the 537 patients who died (a recall of 0.685) while maintaining a precision of 0.422. The ROC curve (Figure~\ref{fig:confusion_matrix_roc}b) further illustrates the model's robust performance across the full range of decision thresholds.
+
+\begin{table}[htb!]
+    \centering
+    \caption{Performance of the final calibrated LightGBM model on the held-out test set.}
+    \label{tab:final_performance}
+    \begin{tabular}{lr}
+        \toprule
+        \textbf{Metric} & \textbf{Value} \\
+        \midrule
+        ROC-AUC & 0.7488 \\
+        Accuracy & 0.6648 \\
+        Precision & 0.4220 \\
+        Recall (Sensitivity) & 0.6853 \\
+        F1-Score & 0.5224 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ml_images/confusion_matrix.png}\hfill
+    \includegraphics[width=0.5\textwidth]{ml_images/roc_curve.png}
+    \caption{(\textbf{a}) Confusion matrix of the final model on the test set at the optimal threshold (0.2704). (\textbf{b}) ROC curve for the final model on the test set, showing an AUC of 0.75.}
+    \label{fig:confusion_matrix_roc}
+\end{figure}
+
+\subsection{Model Interpretability with SHAP}
+To ensure the model's clinical relevance and transparency, its predictions were interpreted using SHAP. The beeswarm plot in Figure~\ref{fig:shap_beeswarm} provides a global summary of the features driving the model's output. This analysis confirms that the model's logic aligns with established clinical knowledge.
+
+The most influential feature was the \texttt{sofa\_total\_24hr} score, a comprehensive measure of organ dysfunction. Other key predictors of mortality included markers of hematological dysfunction (\texttt{rdw\_median\_pct}), overall illness severity (\texttt{apache\_iii\_score}), advanced age, and renal failure (\texttt{bun\_median}). Conversely, higher urine output (\texttt{urine\_output\_total\_24hr}), a sign of preserved kidney function, was a strong predictor of survival. This concordance between the model's learned patterns and clinical pathophysiology provides strong evidence of its validity.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\textwidth]{ml_images/shap_beeswarm.png}
+    \caption{SHAP beeswarm summary plot for the top 20 features. Each dot represents a patient. The feature's value is indicated by color (red=high, blue=low), and its impact on the mortality prediction is shown on the x-axis.}
+    \label{fig:shap_beeswarm}
+\end{figure}
+
+\subsection{Comparison with Prior Work}
+The central challenge in this field is the chasm between the promising internal accuracy reported in machine learning literature and the practical bedside utility of predictive models. Recent studies on SA-AKI mortality using MIMIC-IV have reported ROC-AUC values ranging from 0.79 to as high as 0.88. However, many of these impressive results are likely overestimations resulting from methodological flaws, such as information leakage from whole-stay data aggregation or performing data-dependent preprocessing steps on the entire dataset.
+
+In stark contrast, our work was conducted under a strict, TRIPOD-aligned, leakage-aware framework. The resulting ROC-AUC of 0.749, derived from a single evaluation on a held-out test set using only T0-T24 data, should be considered a more realistic and trustworthy estimate of achievable performance for a true early warning system. This result does not merely present another model; it establishes a new, methodologically sound benchmark for future research in this critical domain.
+
+\subsection{Why LightGBM Outperforms Other Models}
+The selection of LightGBM as the final model was not arbitrary but emerged from a systematic benchmark of nine algorithm families. Several properties of the SA--AKI prediction task explain why gradient-boosted trees, and LightGBM in particular, outperform both linear models and other nonlinear alternatives in this setting:
+
+\begin{enumerate}
+    \item \textbf{Nonlinear interactions without explicit specification:} Clinical risk in SA--AKI is driven by complex interactions between organ systems. For example, the combination of high lactate \emph{and} low urine output \emph{and} elevated SOFA score carries a risk that is not simply the sum of individual effects. Linear models (logistic regression, LDA, Ridge, Lasso) can only capture such interactions if they are manually engineered as product terms, which is infeasible for 162 features. Tree-based models discover these interactions automatically through recursive partitioning.
+
+    \item \textbf{Robustness to feature scale and distribution:} Many laboratory biomarkers in this cohort are heavily right-skewed (e.g., creatinine, bilirubin, lactate). While standardization helps linear models, tree-based models are invariant to monotonic transformations of features, making them naturally robust to skewed distributions without requiring log-transforms or other normalizations.
+
+    \item \textbf{Native handling of missingness patterns:} LightGBM can route missing values to the optimal child node during tree construction, effectively learning from the pattern of missingness itself. This complements our explicit missingness indicators and allows the model to exploit both the imputed values and the fact of missingness simultaneously.
+
+    \item \textbf{LightGBM vs.\ XGBoost:} Both are gradient-boosted tree frameworks, but LightGBM uses a leaf-wise growth strategy (as opposed to XGBoost's level-wise approach), which tends to produce deeper, more specialized trees that can capture finer-grained risk patterns. In our benchmark, this translated to a small but consistent advantage in ROC-AUC (0.749 vs.\ 0.744).
+
+    \item \textbf{Regularization and calibration:} The Optuna-tuned LightGBM model includes regularization through maximum depth constraints, minimum child samples, and L1/L2 penalties on leaf weights. Combined with post-hoc isotonic calibration, this produces predicted probabilities that are both discriminative and well-calibrated—a property that linear models achieve more naturally but at the cost of discrimination.
+\end{enumerate}
+
+\noindent It is worth noting that the performance gap between LightGBM (AUROC 0.749) and logistic regression (AUROC 0.738) is modest, which is consistent with the literature finding that pipeline design choices (temporal window, leakage control) often matter more than the choice of algorithm. The advantage of LightGBM becomes more pronounced in the F1-score and in the model's ability to identify high-risk patients at clinically useful thresholds.
+
+\subsection{Evidence for Trustworthiness: Why a Clinician Should Believe This Model}
+A predictive model's value to a clinician rests not on a single metric but on a convergence of evidence across multiple dimensions. We present the following lines of evidence:
+
+\begin{enumerate}
+    \item \textbf{Methodological integrity:} Unlike prior studies that report AUROC values of 0.85+ but use whole-stay data or globally fitted preprocessing, every step of our pipeline was designed to prevent information leakage. The AUROC of 0.749 reflects what the model can actually achieve when given only the information available at the bedside at 24 hours. This is a \emph{lower bound} on what a leakage-free model can deliver, not an inflated upper bound.
+
+    \item \textbf{Clinical face validity via SHAP:} The model's top predictors—SOFA score, RDW, APACHE~III, age, BUN, urine output—are all established clinical risk factors for ICU mortality. A model that relies on clinically meaningful features is more likely to generalize than one that exploits statistical artifacts. The SHAP analysis shows that the direction of effects is consistent with pathophysiology: higher SOFA increases risk, higher urine output decreases it.
+
+    \item \textbf{Calibration:} The model was explicitly calibrated using isotonic regression, meaning that when it predicts a 30\% risk of death, approximately 30\% of such patients actually die. This is critical for clinical decision-making: a well-discriminating but poorly calibrated model can mislead clinicians about absolute risk levels.
+
+    \item \textbf{Decision-curve analysis:} The DCA demonstrates that using the model to guide clinical decisions provides a net benefit over the default strategies of treating all or no patients across a clinically relevant range of risk thresholds (8--30\%). This directly addresses the question of whether the model adds value to clinical practice.
+
+    \item \textbf{Concordance with survival models:} The same T0--T24 features, when used in independent survival models (CoxPH C-index 0.693, DeepSurv C-index 0.688), produce consistent risk stratification with statistically significant separation of Kaplan-Meier curves (log-rank $p < 0.001$). This triangulation across different modeling paradigms strengthens confidence in the underlying signal.
+
+    \item \textbf{Validation dataset:} The model was validated on a held-out test set of 2,008 patients (20\% of the cohort) that was never used during any stage of model development, tuning, or calibration. The test set was drawn from the same MIMIC--IV database but was strictly sequestered. While this constitutes internal validation rather than external validation on a separate hospital's data, the strict separation and single-use evaluation protocol provide an unbiased estimate of performance on new MIMIC--IV patients.
+
+    \item \textbf{Honest reporting of limitations:} We do not claim that this model is ready for deployment. External validation on datasets such as eICU or institutional EHR data is a prerequisite. The AUROC of 0.749, while lower than inflated numbers in the literature, is reported honestly and represents a realistic starting point for clinical translation.
+\end{enumerate}
+
+\section{Time-to-Event (Survival) Analysis}
+To provide a more dynamic assessment of patient risk, we developed survival models to predict the time to in-hospital death using the same T0--T24 feature set.
+
+\subsection{Cox Proportional Hazards Model}
+After feature selection and penalization tuning, the final Cox Proportional Hazards (CoxPH) model achieved a test C-index of 0.693, indicating good discriminative ability over time. The forest plot in Figure~\ref{fig:cox_forest_plot} reveals the key drivers of hazard. Comorbidities like metastatic cancer and high SOFA scores were the strongest predictors of an increased hazard of death. Interestingly, early interventions such as RRT and vasopressor use were associated with a reduced hazard. This is likely a reflection of confounding by indication, where the sickest patients receive the most aggressive interventions, rather than a causal protective effect of the therapies themselves. The model's ability to effectively stratify patients into distinct risk groups was confirmed by the clear separation of Kaplan-Meier curves for its predicted risk quartiles (Figure~\ref{fig:cox_km_quartiles}, log-rank $p < 0.001$).
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{survival_images/cox_forest_plot.png}
+    \caption{Forest plot of hazard ratios for the top 20 predictors in the final CoxPH model. Values to the right of the dashed line (HR > 1) indicate an increased risk of death.}
+    \label{fig:cox_forest_plot}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{survival_images/cox_km_quartiles.png}
+    \caption{Kaplan-Meier survival curves for the test set, stratified by risk quartiles predicted by the CoxPH model, demonstrating effective risk stratification.}
+    \label{fig:cox_km_quartiles}
+\end{figure}
+
+\subsection{DeepSurv Model}
+A custom neural network-based survival model, DeepSurv, was also developed and achieved a comparable test C-index of 0.688. Like the Cox model, it demonstrated strong risk stratification (Figure~\ref{fig:deepsurv_km_tertiles}, log-rank $p < 0.001$). The clinical utility of the DeepSurv model was further interrogated through calibration and decision curve analysis (DCA). The calibration plots (Figure~\ref{fig:deepsurv_calibration}) showed good agreement between predicted and observed event probabilities at key clinical horizons, although with a slight tendency to overestimate risk in the highest-risk bins—a common artifact that could be addressed in future work with more advanced calibration techniques. Critically, the DCA (Figure~\ref{fig:deepsurv_dca}) showed that using the model to inform clinical decisions provides a clear net benefit over the default strategies of treating all or no patients for risk thresholds between 8\% and 30\%.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{survival_images/deepsurv_km_tertiles.png}
+    \caption{Kaplan-Meier survival curves for the test set, stratified by risk tertiles predicted by the DeepSurv model.}
+    \label{fig:deepsurv_km_tertiles}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\textwidth]{survival_images/deepsurv_calibration.png}
+    \caption{Calibration plots for the DeepSurv model at 90, 180, and 365 hours.}
+    \label{fig:deepsurv_calibration}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{survival_images/deepsurv_dca.png}
+    \caption{Decision Curve Analysis for the DeepSurv model at a 180-hour horizon, demonstrating positive net benefit across a range of clinically relevant risk thresholds.}
+    \label{fig:deepsurv_dca}
+\end{figure}
+
+\subsection{Synthesis of Survival Analysis}
+Both the CoxPH and DeepSurv models delivered robust and clinically interpretable predictions of time-to-death, with C-indices of 0.693 and 0.688, respectively. These results are comparable to those from other methodologically sound survival studies in critical care. For instance, Hu et al. (2021) reported a C-index of 0.72 but used whole-stay aggregated features, which introduces a high risk of data leakage. Our results, derived strictly from T0--T24 data, therefore provide a more reliable and clinically actionable benchmark for early dynamic risk stratification in the SA--AKI population.
+

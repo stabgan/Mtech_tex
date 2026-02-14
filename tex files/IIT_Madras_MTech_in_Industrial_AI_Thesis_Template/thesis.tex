@@ -1,0 +1,69 @@
+%% See 'tutorial.pdf'
+\documentclass
+    [mtech,
+     smplmath]
+    {iitmdissertation}
+
+\usepackage{multirow}
+\usepackage{hyperref}
+\renewcommand\textupper[1]{\texorpdfstring{\MakeUppercase{#1}}{#1}}
+\usepackage{xcolor}
+\usepackage{array,booktabs}
+
+
+%--------
+
+
+\dissertationDepartment      {Department of Chemical Engineering}
+\dissertationAuthorName      {Kaustabh Ganguly}
+\dissertationRollNumber      {CH23M514}
+\dissertationDateOfBirth     {10 September 2025}
+\dissertationDegree          {Master Of Technology in Industrial Artificial Intelligence}
+\dissertationTitle           {Mortality Analysis Of Patients With Sepsis Associated Acute Kidney Injury (SAAKI) Cohort from MIMIC-IV dataset}
+\dissertationMonth           {September}
+\dissertationYear            {2025}
+\dissertationCertificateDate {September 2025}
+\dissertationType            {Thesis}
+\dissertationGuides          {Debopam Nanda \& Samyabrata Chakraborty}
+\dissertationCommitteeName   {Doctoral Committee}
+\dissertationImage           {iitm-logo}
+
+\setupGlossaryAbbreviationsDefinitions
+\begin{document}
+  \prematter
+      %\input 0-prematter/pre-quote
+      %\input 0-prematter/pre-dedication
+      \printCertificate
+      %\input 0-prematter/pre-list-of-publications
+%%
+%%
+%%
+  \begin{FrontMatter}
+      % enable this if you have abbrevations in your report
+      \printGlossaryAndAbbreviations
+      % use this  if you have notations in your report
+      \printNotation
+  \end{FrontMatter}
+%%
+%%
+%%
+  \begin{MainMatter}
+      \input 2-mainmatter/chapters/chap-1-introduction
+      \input 2-mainmatter/chapters/chap-2-literature-review
+      \input 2-mainmatter/chapters/chap-3-problem-definition
+      \input 2-mainmatter/chapters/chap-4-methodology
+      \input 2-mainmatter/chapters/chap-5-dataset-understanding
+      \input 2-mainmatter/chapters/chap-6-results
+      \input 2-mainmatter/chapters/chap-7-conclusions
+
+      \appendix
+      \input 2-mainmatter/appendices/appn-general-notes
+      \input 2-mainmatter/appendices/feature_list
+  \end{MainMatter}
+%%
+%%
+%%
+  \begin{BackMatter}
+      \printBibliographyReferences{references.bib}     
+  \end{BackMatter}
+\end{document}

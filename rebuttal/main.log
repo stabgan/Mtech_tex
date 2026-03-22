@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.2.14)  19 FEB 2026 13:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.2.14)  19 FEB 2026 15:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -922,7 +922,7 @@ Package: blkarray 2015/02/27 v0.07 Block array (dpc)
 Package: bigstrut 2024/11/12 v2.9 Provide larger struts in tabulars
 \bigstrutjot=\dimen345
 )
-No file main.aux.
+(./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
@@ -939,6 +939,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
 LaTeX Font Info:    ... okay on input line 66.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
 LaTeX Font Info:    ... okay on input line 66.
+
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count345
@@ -1013,18 +1014,18 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 {/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 [2]
+
+[3]
 LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
-184.
-LaTeX Font Info:    No file OMScmtt.fd. on input line 184.
+192.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 192.
 
 
 LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbackslash' on input line 184.
+(Font)              for symbol `textbackslash' on input line 192.
 
 
-
-[3]
 
 [4]
 
@@ -1051,19 +1052,19 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 29895 strings out of 473190
- 730768 string characters out of 5715800
+ 29898 strings out of 473190
+ 730807 string characters out of 5715800
  1267779 words of memory out of 5000000
- 52665 multiletter control sequences out of 15000+600000
+ 52666 multiletter control sequences out of 15000+600000
  561773 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,11n,91p,1598b,646s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,11n,91p,1598b,644s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
 /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
 usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></u
 sr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (11 pages, 91981 bytes).
+Output written on main.pdf (11 pages, 91752 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  44 compressed objects within 1 object stream

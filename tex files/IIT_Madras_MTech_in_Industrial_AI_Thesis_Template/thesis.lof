@@ -1,0 +1,28 @@
+{\bfseries Figure} \hfill {\bfseries Caption} \hfill {\bfseries Page}\par 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces MIMIC--IV data universe leveraged in this study.}}{35}{figure.caption.11}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Ontology crosswalk linking SNOMED~CT $\rightarrow $ UMLS CUIs $\rightarrow $ RxNorm ingredients, with ATC cross-reference.}}{35}{figure.caption.12}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces CONSORT-style flow of cohort construction with key exclusions.}}{37}{figure.caption.13}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Clinical rule components used for cohort labeling.}}{38}{figure.caption.14}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Illustrative patient journey with T0--T24 feature window, infection window, Sepsis onset, and AKI onset; the SA--AKI link is $\pm $48\,h around Sepsis onset.}}{39}{figure.caption.15}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Statistical significance of key clinical variables between survivor and non-survivor groups, confirming that the selected features carry a strong prognostic signal ($p < 0.001$, Mann-Whitney U test).}}{40}{figure.caption.18}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Distributions of key clinical variables in the training set, stratified by mortality outcome. Non-survivors consistently show distributions shifted towards higher severity.}}{42}{figure.caption.20}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Top 30 features with the strongest positive (red) and negative (blue) correlation with in-hospital mortality in the training set.}}{42}{figure.caption.21}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces (\textbf {a}) Confusion matrix of the final model on the test set at the optimal threshold (0.2704). (\textbf {b}) ROC curve for the final model on the test set, showing an AUC of 0.75.}}{45}{figure.caption.24}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces SHAP beeswarm summary plot for the top 20 features. Each dot represents a patient. The feature's value is indicated by color (red=high, blue=low), and its impact on the mortality prediction is shown on the x-axis.}}{46}{figure.caption.25}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Forest plot of hazard ratios for the top 20 predictors in the final CoxPH model. Values to the right of the dashed line (HR > 1) indicate an increased risk of death.}}{52}{figure.caption.27}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Kaplan-Meier survival curves for the test set, stratified by risk quartiles predicted by the CoxPH model, demonstrating effective risk stratification.}}{53}{figure.caption.28}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Kaplan-Meier survival curves for the test set, stratified by risk tertiles predicted by the DeepSurv model.}}{53}{figure.caption.29}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Calibration plots for the DeepSurv model at 90, 180, and 365 hours.}}{54}{figure.caption.30}%
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Decision Curve Analysis for the DeepSurv model at a 180-hour horizon, demonstrating positive net benefit across a range of clinically relevant risk thresholds.}}{54}{figure.caption.31}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

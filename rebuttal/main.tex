@@ -181,7 +181,7 @@
 
 \vspace{\baselineskip}
 
-\textbf{Response:} The figures in question are pipeline and logic diagrams stored as PDF vector files (Figures 5.1, 5.3, 5.4, 5.5, 5.6) and a hazard ratio forest plot stored as a PNG (Figure 6.3). The small font appearance arose because the source diagrams were generated at a resolution where the text labels were small relative to the figure canvas. Simply scaling the figures in LaTeX enlarges the canvas but does not increase the font size relative to the printed page. To address this, each affected figure was re-rendered at 400 DPI (four times the standard screen resolution), and the resulting high-resolution raster was converted back to PDF at 300 DPI with the page dimensions set to match the thesis text width. This ensures that when LaTeX includes the figure at \texttt{\textbackslash linewidth}, the text labels are physically larger on the printed page. The PNG figures (Figure 6.3 and the ML result figures) were upscaled to 1875 pixels wide using Lanczos resampling at 300 DPI. The figures now render with legible labels at the printed page size.
+\textbf{Response:} The figures in question are pipeline and logic diagrams (Figures 5.1, 5.3, 5.4, 5.5, 5.6) and a hazard ratio forest plot (Figure 6.3). The small font appearance arose because the original source diagrams were designed with text labels that were too small relative to the figure canvas. Simply scaling the figures in LaTeX enlarges the canvas proportionally but does not improve the legibility of the labels at the printed page size. To address this, all six affected figures were completely redesigned from scratch with significantly larger fonts, bolder labels, and improved visual clarity. The redesigned figures were exported at 300 DPI and embedded as high-resolution PDFs (for the pipeline and logic diagrams) or PNGs (for the forest plot and statistical testing figure). The LaTeX inclusion widths were also adjusted to ensure the figures occupy the full text width where appropriate. The figures now render with clearly legible labels at the printed page size.
 
 \vspace{\baselineskip}
 
@@ -189,27 +189,27 @@
 \begin{enumerate}
     \item
     \begin{enumerate}
-        \item Figure 5.1 (MIMIC-IV data universe): Page 33. Re-rendered at 400 DPI and converted to PDF at 300 DPI. Figure now included at \texttt{width=1.1\textbackslash linewidth} with \texttt{\textbackslash makebox} centering.
+        \item Figure 5.1 (MIMIC-IV data universe): Page 33. Figure completely redesigned with larger fonts and clearer labels. Exported at 300 DPI and embedded as PDF. Figure included at \texttt{width=1.1\textbackslash linewidth} with \texttt{\textbackslash makebox} centering.
     \end{enumerate}
     \item
     \begin{enumerate}
-        \item Figure 5.3 (CONSORT flow diagram): Page 35. Same re-rendering treatment applied.
+        \item Figure 5.3 (CONSORT flow diagram): Page 35. Figure completely redesigned with larger fonts and improved readability. Same inclusion treatment applied.
     \end{enumerate}
     \item
     \begin{enumerate}
-        \item Figure 5.4 (Sepsis-3 logic and urine output sessionization, two-panel): Page 36. Both subfigures re-rendered at 400 DPI. Subfigure widths adjusted from \texttt{0.49\textbackslash linewidth} to \texttt{0.48\textbackslash linewidth} to prevent overflow.
+        \item Figure 5.4 (Sepsis-3 logic and urine output sessionization, two-panel): Page 36. Both subfigures redesigned with larger text labels. Subfigure widths set to \texttt{0.48\textbackslash linewidth} to prevent overflow.
     \end{enumerate}
     \item
     \begin{enumerate}
-        \item Figure 5.5 (patient timeline): Page 37. Re-rendered at 400 DPI and converted to PDF at 300 DPI.
+        \item Figure 5.5 (patient timeline): Page 37. Figure redesigned with larger fonts and exported at 300 DPI as PDF.
     \end{enumerate}
     \item
     \begin{enumerate}
-        \item Figure 5.6 (statistical testing results): Page 39. Re-rendered at 400 DPI.
+        \item Figure 5.6 (statistical testing results): Page 39. Figure redesigned with larger fonts and clearer axis labels. Replaced as a high-resolution PNG.
     \end{enumerate}
     \item
     \begin{enumerate}
-        \item Figure 6.3 (Cox PH forest plot): Page 51. Upscaled from 1189 to 1875 pixels wide using Lanczos resampling at 300 DPI. LaTeX inclusion width increased from \texttt{0.7\textbackslash textwidth} to \texttt{0.85\textbackslash textwidth}.
+        \item Figure 6.3 (Cox PH forest plot): Page 51. Figure redesigned with larger fonts and bolder labels. Replaced as a high-resolution PNG. LaTeX inclusion width set to \texttt{0.85\textbackslash textwidth}.
     \end{enumerate}
 \end{enumerate}
 

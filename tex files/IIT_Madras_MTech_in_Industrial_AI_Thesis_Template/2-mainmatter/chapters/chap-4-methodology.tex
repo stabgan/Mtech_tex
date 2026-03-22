@@ -1,31 +1,10 @@
 \chapter{Methodology}\label{chap:methods}
 
 \section{Overview}
-This chapter details the methodological pipeline designed to develop and validate predictive models for SA--AKI mortality. The workflow begins with the construction of a high-fidelity cohort from an ontology-integrated data warehouse. It proceeds through three analytical stages: (i) exploratory data analysis for phenotyping, (ii) development of a supervised binary classifier for mortality (the primary task), and (iii) time-to-event survival analysis. A strict, one-time stratified 80/20 data split underpins the entire process to prevent information leakage. All data-dependent transformations are fitted on the training set only and then applied to the test set for a single final evaluation. The development process is guided by the TRIPOD statement for transparent reporting.
+This chapter details the methodological pipeline that was designed to develop and validate predictive models for SA--AKI mortality. The workflow begins with the construction of a high-fidelity cohort from an ontology-integrated data warehouse and proceeds through three analytical stages: (i) exploratory data analysis for phenotyping, (ii) development of a supervised binary classifier for mortality (the primary task), and (iii) time-to-event survival analysis. A strict, one-time stratified 80/20 data split underpins the entire process to prevent information leakage. All data-dependent transformations were fitted on the training set only and subsequently applied to the test set for a single final evaluation. The development process was guided by the TRIPOD statement for transparent reporting.
 
 \section{Data Sources, ETL, and Cohort (T0--T24)}
 \textbf{ETL and Integration.} The analysis asset was built by ingesting and integrating multiple sources, primarily MIMIC--IV, with medical ontologies (RxNorm, ATC, SNOMED~CT) linked via the Unified Medical Language System (UMLS). This was managed in a PostgreSQL database, enabling reproducible, ingredient-level value sets for concepts like systemic antibiotics and vasopressors. A validation suite ensured unit harmonization (e.g., F$\rightarrow$C, lb$\rightarrow$kg), referential integrity, and logical consistency.
-
-\textbf{MIMIC--IV Dataset.} The Medical Information Mart for Intensive Care IV (MIMIC--IV v3.1) is a large, freely accessible electronic health record dataset comprising de-identified data from patients admitted to the Beth Israel Deaconess Medical Center (BIDMC) in Boston, Massachusetts, between 2008 and 2022 \citep{Johnson_2023_MIMIC}. The database contains over 430,000 hospital admissions and approximately 73,000 ICU stays. For this study, the following MIMIC--IV modules were used:
-\begin{itemize}
-    \item \textbf{Core module (\texttt{hosp}):} Patient demographics, admission/discharge records, diagnoses (ICD--9/10--CM), procedures, and pharmacy data. This module provided the foundation for patient identification, comorbidity extraction (Charlson index components), and outcome ascertainment (in-hospital death).
-    \item \textbf{ICU module (\texttt{icu}):} High-resolution time-stamped charted events including vital signs (heart rate, blood pressure, respiratory rate, SpO$_2$), fluid inputs/outputs, and ventilator settings. This module was the primary source for T0--T24 vital sign aggregates, fluid balance calculations, and urine output measurements.
-    \item \textbf{Laboratory module (within \texttt{hosp}):} Time-stamped laboratory results including complete blood count, metabolic panel, liver function tests, coagulation studies, arterial blood gases, and inflammatory markers. Each result was mapped to standardized units before aggregation.
-    \item \textbf{Microbiology module (within \texttt{hosp}):} Culture orders and results, used in conjunction with pharmacy records to identify suspected infection events for Sepsis--3 labeling.
-    \item \textbf{Pharmacy/eMAR module:} Medication administration records, cross-referenced with RxNorm and ATC ontologies to identify systemic antibiotics and vasopressors at the ingredient level.
-\end{itemize}
-
-\noindent\textbf{Feature Categories for Risk Framing.} The 162 features used to characterize the degree of risk within the first 24 hours were drawn from six clinically distinct domains, each contributing a different dimension of the patient's early physiological state:
-\begin{enumerate}
-    \item \textbf{Demographics and baseline (4 features):} Age, sex, admission weight, and AKI trigger type. These establish the patient's baseline characteristics.
-    \item \textbf{Comorbidity burden (18 features):} Charlson comorbidity index components and total score, capturing the chronic disease context (e.g., diabetes, liver disease, metastatic cancer) that modulates acute risk.
-    \item \textbf{Severity scores (8 features):} APACHE~III score and SOFA sub-scores (respiratory, cardiovascular, hepatic, coagulation, renal, neurological) plus the total, providing validated composite measures of organ dysfunction severity.
-    \item \textbf{Vital signs and hemodynamics ($\sim$50 features):} Heart rate, blood pressures (systolic, diastolic, MAP), respiratory rate, SpO$_2$, and shock index, each summarized by multiple temporal statistics (first, last, median, IQR, range, delta, slope, AUC, count) to capture both the level and trajectory of physiological derangement.
-    \item \textbf{Laboratory and blood gas panel ($\sim$70 features):} Renal function (creatinine, BUN), metabolic state (glucose, bicarbonate, anion gap, lactate), hepatic function (AST, ALT, bilirubin, albumin, ALP), hematology (hemoglobin, platelets, WBC, RDW, INR), electrolytes (sodium, potassium, chloride, calcium, magnesium, phosphate), oxygenation (PaO$_2$, PaCO$_2$, pH, PF ratio), and inflammatory markers (LDH, troponin). Each analyte is summarized by count, median, min, max, and where applicable, delta and QC fractions.
-    \item \textbf{Fluid balance and therapies ($\sim$12 features):} Net fluid balance, urine output (absolute and weight-indexed), and binary flags for mechanical ventilation, vasopressor use, and RRT within 24 hours.
-\end{enumerate}
-
-\noindent This multi-domain feature set ensures that the model has access to a comprehensive physiological snapshot at the decision point, spanning organ-specific dysfunction markers, systemic severity, treatment intensity, and temporal dynamics.
 
 \textbf{Cohort Definition.} The study population was defined as adults ($\geq$18\,y) on their first ICU stay with a length-of-stay $\geq$24\,h. The SA--AKI cohort was identified using established clinical criteria:
 \begin{itemize}
@@ -42,39 +21,7 @@ A one-time, stratified 80/20 train-test split was performed on the cohort. Let $
 \]
 where partitions are disjoint and stratified by the outcome to maintain class balance. All data-dependent objects—imputation models, scaling parameters, and encoding vocabularies—were fitted \emph{only} on $\mathcal{D}_{\text{train}}$ and then applied as frozen transformers to $\mathcal{D}_{\text{test}}$. Any validation set used for model tuning or calibration was created as a further split \emph{from within} $\mathcal{D}_{\text{train}}$.
 
-\textbf{Leakage Audit.} A scripted audit ensured that no variables encoding information after T24 were included as predictors. This included removing features like total ICU length of stay and aggregates (e.g., `\_n` observation counts) that could act as proxies for care intensity or illness duration.
-
-\subsection{What Is Data Leakage and Why It Matters}
-Data leakage occurs when information that would not be available at the time of prediction is inadvertently used during model training or evaluation, leading to artificially inflated performance metrics that do not reflect real-world utility. In the context of SA--AKI mortality prediction, leakage can manifest through several distinct channels:
-
-\begin{enumerate}
-    \item \textbf{Temporal leakage (look-ahead bias):} When features are derived from measurements taken \emph{after} the intended prediction time. For example, if a model is meant to predict mortality at 24 hours post-admission but uses laboratory values or vital signs recorded on day 3 or later, it has access to information about the patient's clinical trajectory that a clinician would not have at the decision point. Whole-stay aggregation of time-varying biomarkers (e.g., computing the mean creatinine from admission to discharge) is a common source of this leakage. Similarly, including ICU length of stay as a predictor directly encodes outcome-correlated information: patients who die early have short stays, and survivors have longer ones.
-
-    \item \textbf{Preprocessing leakage (train--test contamination):} When data-dependent transformations—such as imputation, feature scaling, or feature selection—are fitted on the entire dataset (including the test set) before splitting. This allows statistical properties of the test data (means, variances, correlations with the outcome) to influence the training pipeline. For instance, if median imputation is computed across all patients and then the data is split, the imputed values in the training set carry information from test-set patients. The same applies to feature selection: if a Lasso or correlation filter is applied globally, the selected features reflect associations present in the evaluation data.
-
-    \item \textbf{Target leakage:} When a predictor is a direct proxy for the outcome variable. Including length of stay in a mortality model is a canonical example: it is not a cause or early indicator of death but rather a consequence of the same process that determines the outcome.
-\end{enumerate}
-
-\noindent The practical consequence of leakage is that a model appears to perform well during development but fails when deployed prospectively, because the leaked information is no longer available. This is why several published SA--AKI models report AUROC values of 0.85--0.88 in internal testing but have not demonstrated comparable performance in external or prospective settings. Our pipeline was designed from the outset to eliminate all three channels: the T0--T24 window prevents temporal leakage, the train-only fitting of all transformers prevents preprocessing leakage, and the scripted audit removes target proxies.
-
-\subsection{The 24-Hour Window: Rationale and Limitations}
-\label{sec:24h-rationale}
-The choice of a 24-hour observation window after ICU admission (T0--T24) is motivated by both clinical workflow and methodological discipline:
-
-\begin{itemize}
-    \item \textbf{Clinical actionability:} In most ICU workflows, the first 24 hours represent the period during which initial stabilization, diagnostic workup, and early therapeutic decisions are made. A risk score available at the end of this window can inform decisions about escalation of care, nephrology consultation, or goals-of-care discussions at a time when intervention can still alter the trajectory.
-    \item \textbf{Data completeness:} The first 24 hours typically yield the richest set of measurements—admission labs, initial vital sign trends, early fluid balance, and severity scores (APACHE~III, SOFA)—providing a comprehensive snapshot of the patient's physiological state.
-    \item \textbf{Temporal discipline:} A fixed, prospectively defined window eliminates the ambiguity of variable-length observation periods and prevents the inadvertent inclusion of post-decision information.
-\end{itemize}
-
-\noindent\textbf{Heterogeneity of arrival acuity.} A legitimate concern is that patients arrive at the ICU at different stages of their illness. Some patients are admitted directly from the emergency department with early sepsis, while others are transferred from general wards after days of deterioration, and still others arrive post-operatively. This heterogeneity means that the ``first 24 hours of ICU admission'' captures different phases of the disease process for different patients. We address this in several ways:
-
-\begin{itemize}
-    \item \textbf{Severity scores as normalizers:} The APACHE~III score, computed at admission, and the day-1 SOFA score both serve as summary measures of illness severity at the time of ICU entry. By including these as features, the model implicitly adjusts for differences in baseline acuity. A patient who arrives late in their septic course will typically have higher SOFA and APACHE~III scores, and the model learns to weight these accordingly.
-    \item \textbf{Comorbidity encoding:} The Charlson comorbidity index components capture the chronic disease burden that shapes the patient's trajectory prior to ICU admission, providing context for the acute measurements.
-    \item \textbf{Cohort definition anchoring:} The SA--AKI cohort definition requires that both sepsis onset and AKI onset occur within a defined temporal relationship ($\pm$48\,h). This ensures that the cohort is clinically homogeneous in terms of the acute syndrome, even if the timing relative to hospital admission varies.
-    \item \textbf{Acknowledged limitation:} Despite these mitigations, the heterogeneity of arrival timing remains a source of irreducible noise. Patients admitted very early in their septic course may have less informative 24-hour data than those admitted later. This is a fundamental limitation of any fixed-window approach and is explicitly acknowledged as a factor that may attenuate model discrimination. Future work exploring variable-length windows or time-series models could address this limitation.
-\end{itemize}
+\textbf{Leakage Audit.} A scripted audit ensured that no variables encoding information after T24 were included as predictors. This included removing features like total ICU length of stay and aggregates (e.g., \texttt{\_n} observation counts) that could act as proxies for care intensity or illness duration.
 
 \section{Preprocessing and Feature Engineering (Train-Only)}
 \textbf{Missingness Analysis.} The nature of missing data was formally investigated on $\mathcal{D}_{\text{train}}$. Little's MCAR test was performed, and its rejection of the null hypothesis suggested that data were not Missing Completely at Random (MCAR). This justified a more careful handling of missingness beyond simple imputation.
@@ -83,10 +30,10 @@ The choice of a 24-hour observation window after ICU admission (T0--T24) is moti
 
 \textbf{Imputation.} After adding significant missingness indicators, remaining missing values in numerical columns were imputed using the median calculated from the training set.
 
-\textbf{Feature Selection and Scaling.} Highly correlated features (Pearson correlation > 0.99) were identified, and one from each pair was removed to reduce multicollinearity. All numerical features were then standardized using `StandardScaler`, with the scaler being fit only on the training data.
+\textbf{Feature Selection and Scaling.} Highly correlated features (Pearson correlation > 0.99) were identified, and one from each pair was removed to reduce multicollinearity. All numerical features were then standardized using \texttt{StandardScaler}, with the scaler being fit only on the training data.
 
 \section{Exploratory Data Analysis and Phenotyping (Training Only)}
-To understand the cohort's clinical characteristics, an extensive EDA was performed on $\mathcal{D}_{\text{train}}$. This served as an unsupervised phenotyping step. Key analyses included:
+An extensive EDA was performed on $\mathcal{D}_{\text{train}}$ to characterize the cohort's clinical properties. This served as an unsupervised phenotyping step. Key analyses included:
 \begin{itemize}
     \item \textbf{Distributional Analysis:} Visualizing the distributions of key continuous variables (e.g., age, APACHE III, SOFA score, creatinine, lactate) and comparing them between survivor and non-survivor groups using histograms and density plots.
     \item \textbf{Correlation Analysis:} Calculating the Pearson correlation of all features with the mortality outcome to identify the strongest univariate predictors.
@@ -96,12 +43,12 @@ To understand the cohort's clinical characteristics, an extensive EDA was perfor
 \section{Supervised Binary Mortality Prediction (Primary)}
 \textbf{Learning Objective.} For a model $f_\theta:\mathbb{R}^p\!\to\![0,1]$, the goal was to minimize the average binary cross-entropy loss on $\mathcal{D}_{\text{train}}$ using 5-fold cross-validation.
 
-\textbf{Model Benchmarking.} A comprehensive set of models was benchmarked: Logistic Regression, LDA, QDA, Naive Bayes, regularized linear models, Decision Tree, Random Forest, XGBoost, and LightGBM. For tree-based ensembles, hyperparameters were tuned using Optuna. The impact of class imbalance was addressed primarily through `class\_weight='balanced'` and was compared against various oversampling strategies (e.g., SMOTE, ADASYN) in sensitivity analyses.
+\textbf{Model Benchmarking.} A wide set of models was benchmarked: Logistic Regression, LDA, QDA, Naive Bayes, regularized linear models, Decision Tree, Random Forest, XGBoost, and LightGBM. For tree-based ensembles, hyperparameters were tuned using Optuna. The impact of class imbalance was addressed primarily through \texttt{class\_weight='balanced'} and was compared against various oversampling strategies (e.g., SMOTE, ADASYN) in sensitivity analyses.
 
 \textbf{Final Model Selection, Calibration, and Thresholding.} The LightGBM model was selected based on its superior performance. The final pipeline involved:
 \begin{enumerate}
     \item Training the optimized LightGBM model on a sub-split of the training data.
-    \item Calibrating the model's outputs on a held-out validation split (from the training set) using `CalibratedClassifierCV` with the isotonic method.
+    \item Calibrating the model's outputs on a held-out validation split (from the training set) using \texttt{CalibratedClassifierCV} with the isotonic method.
     \item Determining the optimal classification threshold on the same validation split by maximizing Youden's J statistic.
     \item Retraining the final, calibrated LightGBM model on the entire training dataset ($\mathcal{D}_{\text{train}}$).
     \item Evaluating the final model on the untouched test set ($\mathcal{D}_{\text{test}}$) using the predetermined threshold.
@@ -113,13 +60,35 @@ To understand the cohort's clinical characteristics, an extensive EDA was perfor
 The same preprocessed T0--T24 feature matrix was used to model time to in-hospital death, with patients discharged alive being right-censored.
 
 \begin{itemize}
-    \item \textbf{Cox Proportional Hazards (PH):} A CoxPH model was fitted using the `lifelines` library. Feature selection was performed by retaining the top 50 predictors from an initial full model, and the penalizer was tuned. Results were interpreted via a forest plot of hazard ratios.
+    \item \textbf{Cox Proportional Hazards (PH):} A CoxPH model was fitted using the \texttt{lifelines} library. Feature selection was performed by retaining the top 50 predictors from an initial full model, and the penalizer was tuned. Results were interpreted via a forest plot of hazard ratios.
     \item \textbf{DeepSurv:} A custom neural network-based Cox model was implemented in PyTorch, using SELU activations and residual connections. The model was trained by minimizing the negative Cox partial log-likelihood with the Efron method for handling ties.
 \end{itemize}
-Model performance was assessed by Harrell's C-index, time-dependent AUC, calibration plots for 7, 14, and 28-day horizons, and Kaplan-Meier curves stratified by model-predicted risk quartiles. The statistical significance of the risk stratification was confirmed with the log-rank test.
+Model performance was assessed by Harrell's C-index, time-dependent AUC, calibration plots at clinically relevant horizons (90, 180, and 365 hours post-admission), and Kaplan-Meier curves stratified by model-predicted risk quartiles. The statistical significance of the risk stratification was confirmed with the log-rank test.
 
 \section{Adherence to TRIPOD Guidelines}
-This study was developed in accordance with the TRIPOD (Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis) guidelines. Key items addressed include:
+
+\subsection{Data Leakage: Definition, Mechanisms, and Mitigation}
+In the context of clinical prediction modeling, data leakage has been defined as the inadvertent incorporation of information that would not be available at the intended time of prediction into the model training or evaluation process, resulting in inflated performance estimates that fail to reflect real-world utility \citep{Kang_Yoon_2023}. For SA--AKI mortality prediction, three principal mechanisms through which leakage may be introduced have been identified in the literature and were considered during the design of this pipeline.
+
+The first mechanism, temporal leakage (also termed look-ahead bias), arises when features are derived from measurements recorded after the intended prediction horizon. A model designed to estimate mortality risk at 24 hours post-admission that incorporates laboratory values from subsequent days, or whole-stay aggregates such as the mean creatinine across the entire ICU episode, has been provided with information that encodes the patient's future trajectory and outcome. The inclusion of total ICU length of stay as a predictor represents a particularly direct form of this bias, as length of stay serves as a strong proxy for whether and when death occurred \citep{Chen_2025}.
+
+The second mechanism, preprocessing leakage, has been observed when data-dependent transformations (including imputation, scaling, and feature selection) are fitted on the entire dataset prior to the train--test split. Under such conditions, the statistical properties of the held-out records (means, variances, and correlations with the outcome) are permitted to influence the training pipeline, and optimistically biased performance estimates are produced as a consequence \citep{Kang_Yoon_2023}.
+
+The third mechanism, selection leakage, occurs when feature screening is conducted across the full dataset rather than within the training partition alone. Features that happen to correlate with the outcome across all records, including those subsequently reserved for evaluation, are preferentially retained, and the resulting predictor set carries information from the evaluation data.
+
+In the present work, each of these mechanisms has been addressed through explicit safeguards. Temporal leakage has been prevented by restricting all features to the T0--T24 window and by deploying a scripted audit that flags any variable requiring post-T24 information. Preprocessing leakage has been avoided by fitting all transformers (imputer, scaler, and missingness indicator selector) exclusively on $\mathcal{D}_{\text{train}}$. Selection leakage has been precluded by confining all feature screening to the training partition. The held-out test set was used exactly once for final evaluation, and no iterative refinement based on test-set performance was undertaken.
+
+\subsection{The 24-Hour Window: Rationale, Strengths, and Heterogeneity Considerations}\label{sec:t24-heterogeneity}
+The selection of a fixed 24-hour observation window anchored to ICU admission (T0--T24) was motivated by the structure of clinical workflows in intensive care. The first ICU day is the period during which the initial assessment is typically completed, baseline investigations become available, and early management decisions regarding fluid resuscitation, vasopressor initiation, and antibiotic escalation are made. A prediction generated at T24 is therefore aligned with the natural decision point at which escalation or de-escalation of care is considered.
+
+A fixed clock anchored to ICU admission, however, introduces a source of heterogeneity that warrants explicit discussion. Patients arrive in the ICU at different stages of their illness trajectory: some are admitted directly from the emergency department near the onset of sepsis, whereas others are transferred from general wards after a period of progressive deterioration. Consequently, the T0--T24 window captures different phases of the underlying disease process across patients. For early presenters, the window may coincide with the initial inflammatory surge, while for late transfers, it may reflect a more established pattern of organ dysfunction.
+
+This heterogeneity represents a genuine limitation of any admission-anchored design, yet it also reflects the conditions under which a bedside prediction tool would be required to operate in practice. A clinician querying the model at the 24-hour mark has access only to the information accumulated since admission, regardless of the patient's prior trajectory. Several features included in the model were observed to partially account for this variation: the APACHE~III score, computed at admission, integrates acute physiology with chronic health status and thereby captures elements of the pre-ICU trajectory; the SOFA score at 24 hours reflects cumulative organ dysfunction irrespective of when it began; the Charlson comorbidity index components provide context regarding baseline vulnerability; and the first/last/delta/slope suffixes applied to time-varying features encode within-window dynamics that have been expected to differ between early and late presenters.
+
+Stratified analyses by admission source (emergency department versus ward transfer) or by the interval from symptom onset to ICU admission could be pursued in future work to quantify the degree to which model performance varies across these subgroups. An alternative design in which the observation window is anchored to sepsis onset rather than ICU admission has also been considered, though such an approach introduces its own difficulties because the sepsis onset time is itself an estimated quantity derived from clinical rules rather than a directly observed event.
+
+\medskip
+The present study was designed in accordance with the TRIPOD (Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis) guidelines. The key items addressed include:
 \begin{itemize}
     \item \textbf{Source of Data (Item 4a):} The study design and source of data (MIMIC-IV, a large electronic health record database) are clearly described.
     \item \textbf{Participants (Item 5a-b):} The study setting (ICU), location, and detailed eligibility criteria for participants are specified in the cohort construction.

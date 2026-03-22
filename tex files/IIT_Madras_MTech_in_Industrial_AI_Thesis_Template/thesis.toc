@@ -1,0 +1,91 @@
+~ \hfill {\bfseries Page}\par 
+\contentsline {chapter}{\nonumberline \MakeUppercase []{Abstract}}{ii}{chapter*.3}%
+\contentsline {chapter}{\nonumberline \MakeUppercase []{List of Tables}}{vii}{chapter*.5}%
+\contentsline {chapter}{\nonumberline \MakeUppercase []{List of Figures}}{viii}{chapter*.6}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~1}}\MakeUppercase []{Introduction}}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Clinical background and motivation}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}What the literature has tried and where it falls short}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Problem focus and research objectives}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Proposed approach and evaluation plan}{4}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Chapter roadmap}{4}{section.1.5}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~2}}\MakeUppercase []{Literature Review}}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Clinical definitions and epidemiological context}{6}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Conventional severity indices and early warning systems}{7}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Datasets and cohort construction in SA--AKI modeling}{7}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Feature engineering, selection, and leakage risks}{8}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Missing data mechanisms and imputation choices}{8}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Class imbalance, evaluation strategy, and thresholding}{9}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Model classes, tuning, calibration, and interpretability}{10}{section.2.7}%
+\contentsline {section}{\numberline {2.8}External validity, transportability, and deployment timing}{10}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Detailed appraisal of representative studies}{11}{section.2.9}%
+\contentsline {subsection}{\numberline {2.9.1}Chen et al.\ (2025): SA--AKI mortality in MIMIC--IV}{11}{subsection.2.9.1}%
+\contentsline {subsection}{\numberline {2.9.2}Li et al.\ (2023): SA--AKI mortality in MIMIC--IV}{13}{subsection.2.9.2}%
+\contentsline {subsection}{\numberline {2.9.3}Hu et al.\ (2021): survival analysis in MIMIC--III}{13}{subsection.2.9.3}%
+\contentsline {subsection}{\numberline {2.9.4}Roknaldin et al.\ (2024): sepsis to AKI prediction in MIMIC--III}{14}{subsection.2.9.4}%
+\contentsline {subsection}{\numberline {2.9.5}Chaudhary et al.\ (2020): phenotype discovery in MIMIC--III}{15}{subsection.2.9.5}%
+\contentsline {subsection}{\numberline {2.9.6}Lin et al.\ (2025): progression to chronic kidney disease in MIMIC--IV}{15}{subsection.2.9.6}%
+\contentsline {subsection}{\numberline {2.9.7}He et al.\ (2021): acute kidney disease after SA--AKI}{16}{subsection.2.9.7}%
+\contentsline {subsection}{\numberline {2.9.8}Kantola et al.\ (2025): admission procalcitonin and risk of AKI}{16}{subsection.2.9.8}%
+\contentsline {section}{\numberline {2.10}Synthesis and implications for this thesis}{17}{section.2.10}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~3}}\MakeUppercase []{Problem Definition and Formulation}}{18}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Clinical decision and scope}{18}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Observational unit, clocks, and information sets}{18}{section.3.2}%
+\contentsline {paragraph}{\nonumberline Target population and case definition.}{19}{paragraph*.8}%
+\contentsline {section}{\numberline {3.3}Data–generating view and notation}{19}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Problem 1 (Unsupervised): Exploratory Analysis and Phenotyping}{20}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Problem 2 (Supervised, Primary): Early–Window Mortality Risk}{20}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Label and objective}{20}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Performance targets}{21}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Decision rule and operating point}{21}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}Hypothesis classes and regularization}{21}{subsection.3.5.4}%
+\contentsline {subsection}{\numberline {3.5.5}Interpretability requirement}{22}{subsection.3.5.5}%
+\contentsline {paragraph}{\nonumberline Constraints and guardrails.}{22}{paragraph*.10}%
+\contentsline {section}{\numberline {3.6}Problem 3 (Survival): Early–Covariate Time to Death}{22}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Evaluation protocol}{23}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Assumptions and risks}{23}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Compact statement of aims}{23}{section.3.9}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~4}}\MakeUppercase []{Methodology}}{25}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Overview}{25}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Data Sources, ETL, and Cohort (T0--T24)}{25}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Data Split and Leakage Control}{26}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Preprocessing and Feature Engineering (Train-Only)}{27}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Exploratory Data Analysis and Phenotyping (Training Only)}{27}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Supervised Binary Mortality Prediction (Primary)}{28}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Survival Analysis (Time to Death)}{29}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Adherence to TRIPOD Guidelines}{29}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Data Leakage: Definition, Mechanisms, and Mitigation}{29}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}The 24-Hour Window: Rationale, Strengths, and Heterogeneity Considerations}{31}{subsection.4.8.2}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~5}}\MakeUppercase []{Dataset Understanding and EDA}}{34}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Overview}{34}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Source Tables and Warehouse Context}{34}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Ontology-Driven Concept Identification}{34}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Cohort Construction (Counts and Exclusions)}{36}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Clinical Labeling Rules and Time Anchors}{36}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Sepsis--3 and AKI Logic (Compact View)}{36}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Timeline Conventions and Windows}{36}{subsection.5.5.2}%
+\contentsline {section}{\numberline {5.6}Data Harmonization and Initial Statistics}{36}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Exploratory Analysis and Phenotyping of the Training Cohort}{39}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Statistical Validation of Data Integrity}{39}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}Analysis of Missing Data Patterns}{40}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}Clinical Phenotypes of Survivor vs. Non-Survivor Groups}{41}{subsection.5.7.3}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~6}}\MakeUppercase []{Results}}{43}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Supervised Mortality Prediction}{43}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Model Benchmarking and Selection}{43}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Final Model Performance on the Test Set}{44}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Model Interpretability with SHAP}{45}{subsection.6.1.3}%
+\contentsline {subsection}{\numberline {6.1.4}Why LightGBM Outperforms Other Model Classes}{47}{subsection.6.1.4}%
+\contentsline {subsection}{\numberline {6.1.5}Evidence for Trustworthiness and Clinical Credibility}{48}{subsection.6.1.5}%
+\contentsline {subsection}{\numberline {6.1.6}Comparison with Prior Work and the Case for a Realistic Benchmark}{49}{subsection.6.1.6}%
+\contentsline {subsection}{\numberline {6.1.7}Limitations: External Validation and Dataset Scope}{50}{subsection.6.1.7}%
+\contentsline {section}{\numberline {6.2}Time-to-Event (Survival) Analysis}{51}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Cox Proportional Hazards Model}{51}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}DeepSurv Model}{52}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Synthesis of Survival Analysis}{54}{subsection.6.2.3}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~7}}\MakeUppercase []{Conclusions and Future Work}}{56}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Summary of Work}{56}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Future Work}{57}{section.7.2}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Appendix~A}}\MakeUppercase []{Clinically Plausible Values}}{59}{appendix.A}%
+\contentsline {paragraph}{\nonumberline Implementation.}{64}{paragraph*.57}%
+\contentsline {chapter}{\numberline {\MakeUppercase []{Appendix~B}}\MakeUppercase []{Feature Dictionary and Descriptive Tables}}{65}{appendix.B}%
+\contentsline {chapter}{\nonumberline \MakeUppercase []{Bibliography}}{73}{chapter*.66}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -4,52 +4,52 @@
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \section{Overview}
-This chapter covers the data assets and clinical labeling used to build the analysis-ready SA--AKI cohort. It establishes the temporal conventions and data harmonization steps that precede the main analysis. Crucially, it then details the comprehensive Exploratory Data Analysis (EDA) conducted on the training set. This EDA serves as a form of unsupervised phenotyping, identifying the key clinical characteristics and risk factors that differentiate patient outcomes and providing the empirical foundation for the subsequent predictive modeling.
+The data assets and clinical labeling rules that underlie the analysis-ready SA--AKI cohort are described first, followed by the temporal conventions and harmonization steps that precede the main analysis. The remainder of the chapter is devoted to the Exploratory Data Analysis (EDA) conducted on the training set. That EDA serves as a form of unsupervised phenotyping: it identifies the clinical characteristics and risk factors that differentiate patient outcomes and provides the empirical foundation for the predictive modeling that follows.
 
 \section{Source Tables and Warehouse Context}
 Figure~\ref{fig:data-universe} positions the raw inputs within MIMIC--IV (core, hosp, ICU) that were ingested and optimized in the warehouse. These tables provide the vitals, labs, medications, microbiology, and encounter scaffolding used for labeling and features.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth,height=0.85\textheight,keepaspectratio]{dataset_images/1_data_universe.pdf}
+    \makebox[\linewidth][c]{\includegraphics[width=1.1\linewidth]{dataset_images/1_data_universe.pdf}}
     \caption{MIMIC--IV data universe leveraged in this study.}
     \label{fig:data-universe}
 \end{figure}
 
 \section{Ontology-Driven Concept Identification}
-To avoid brittle, hard-coded drug lists, we map clinical concepts across terminologies and derive ingredient-level value sets programmatically. The crosswalk in Figure~\ref{fig:ontology-crosswalk} shows the pathway from SNOMED~CT through UMLS CUIs into RxNorm ingredients, with ATC used as an orthogonal cross-reference and coverage check. This pipeline underlies the study’s systemic \emph{antibiotic} and \emph{vasopressor} flags used in labeling and feature construction.
+To avoid brittle, hard-coded drug lists, clinical concepts were mapped across terminologies and ingredient-level value sets were derived programmatically. The crosswalk in Figure~\ref{fig:ontology-crosswalk} illustrates the pathway from SNOMED~CT through UMLS CUIs into RxNorm ingredients, with ATC used as an orthogonal cross-reference and coverage check. This pipeline underlies the systemic \emph{antibiotic} and \emph{vasopressor} flags used in labeling and feature construction.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{dataset_images/7_ontology_crosswalk}
+    \makebox[\linewidth][c]{\includegraphics[width=1.1\linewidth]{dataset_images/7_ontology_crosswalk}}
     \caption{Ontology crosswalk linking SNOMED~CT $\rightarrow$ UMLS CUIs $\rightarrow$ RxNorm ingredients, with ATC cross-reference.}
     \label{fig:ontology-crosswalk}
 \end{figure}
 
 \section{Cohort Construction (Counts and Exclusions)}
-We follow a CONSORT-style reduction from all ICU stays to the final analysis cohort. Figure~\ref{fig:consort} consolidates inclusion criteria (adult, first ICU stay, LOS~$\ge$~24\,h), Sepsis--3 screening, SA--AKI temporal linkage, and final exclusions (ESRD, early RRT). These counts are the reference for all summary denominators used in EDA.
+A CONSORT-style reduction from all ICU stays to the final analysis cohort was followed. Figure~\ref{fig:consort} consolidates inclusion criteria (adult, first ICU stay, LOS~$\ge$~24\,h), Sepsis--3 screening, SA--AKI temporal linkage, and final exclusions (ESRD, early RRT). These counts serve as the reference for all summary denominators used in the EDA.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth,height=0.85\textheight,keepaspectratio]{dataset_images/8_consort_flow}
+    \makebox[\linewidth][c]{\includegraphics[width=1.05\linewidth]{dataset_images/8_consort_flow}}
     \caption{CONSORT-style flow of cohort construction with key exclusions.}
     \label{fig:consort}
 \end{figure}
 
 \section{Clinical Labeling Rules and Time Anchors}
 \subsection{Sepsis--3 and AKI Logic (Compact View)}
-Sepsis--3 requires \emph{suspected infection} \emph{and} an acute increase in organ dysfunction ($\Delta$SOFA~$\ge$~2). AKI follows KDIGO using three criteria: serum creatinine (absolute/relative) and urine output (UO). We display the Sepsis--3 gate and the UO sessionization used for the KDIGO UO criterion as a two-panel composite in Figure~\ref{fig:logic-composite}.
+Sepsis--3 requires \emph{suspected infection} \emph{and} an acute increase in organ dysfunction ($\Delta$SOFA~$\ge$~2). AKI follows KDIGO using three criteria: serum creatinine (absolute/relative) and urine output (UO). The Sepsis--3 gate and the UO sessionization used for the KDIGO UO criterion are displayed as a two-panel composite in Figure~\ref{fig:logic-composite}.
 
 \begin{figure}[htbp]
     \centering
-    \begin{subfigure}{0.49\linewidth}
+    \begin{subfigure}{0.48\linewidth}
         \centering
-        \includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{dataset_images/10_sepsis3_and_logic}
+        \includegraphics[width=\linewidth]{dataset_images/10_sepsis3_and_logic}
         \caption{Sepsis--3 core logic gate.}
     \end{subfigure}\hfill
-    \begin{subfigure}{0.49\linewidth}
+    \begin{subfigure}{0.48\linewidth}
         \centering
-        \includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{dataset_images/9_urine_output_logic}
+        \includegraphics[width=\linewidth]{dataset_images/9_urine_output_logic}
         \caption{UO sessionization for KDIGO (continuous windows $<$0.5\,mL/kg/h for $\ge$6\,h).}
     \end{subfigure}
     \caption{Clinical rule components used for cohort labeling.}
@@ -61,7 +61,7 @@ All predictors used in modeling are restricted to the first 24\,h after ICU admi
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth,height=0.85\textheight,keepaspectratio]{dataset_images/6_final_timeline}
+    \makebox[\linewidth][c]{\includegraphics[width=1.1\linewidth]{dataset_images/6_final_timeline}}
     \caption{Illustrative patient journey with T0--T24 feature window, infection window, Sepsis onset, and AKI onset; the SA--AKI link is $\pm$48\,h around Sepsis onset.}
     \label{fig:timeline}
 \end{figure}
@@ -104,17 +104,17 @@ Before any analysis, data were harmonized (e.g., Fahrenheit~$\rightarrow$~Celsiu
 \section{Exploratory Analysis and Phenotyping of the Training Cohort}
 
 \subsection{Statistical Validation of Data Integrity}
-A foundational step of the EDA was to statistically validate the cohort and the train-test split. As shown in Figure~\ref{fig:statistical_testing_eda}, key clinical variables exhibited highly significant differences between survivor and non-survivor groups within the training set (all $p < 0.001$, Mann-Whitney U test). This confirms that the selected features contain a strong prognostic signal. Crucially, the same tests revealed no significant distributional differences for these variables between the training and test sets (all $p > 0.05$), verifying that the stratified split was successful. This ensures that the test set is a representative and unbiased sample for evaluating final model performance.
+A foundational step of the EDA was to statistically validate the cohort and the train-test split. As shown in Figure~\ref{fig:statistical_testing_eda}, key clinical variables exhibited highly significant differences between survivor and non-survivor groups within the training set (all $p < 0.001$, Mann-Whitney U test), suggesting that the selected features contain a strong prognostic signal. The same tests revealed no significant distributional differences for these variables between the training and test sets (all $p > 0.05$), indicating that the stratified split was successful and that the test set may be regarded as a representative sample for evaluating final model performance.
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{preprocessing_images/statistical_testing.png}
-    \caption{Comprehensive statistical testing results. These plots validate that key variables are predictive of the outcome (bottom-left) and that the train and test sets are well-balanced (bottom-right).}
+    \makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{preprocessing_images/statistical_testing.png}}
+    \caption{Statistical significance of key clinical variables between survivor and non-survivor groups, confirming that the selected features carry a strong prognostic signal ($p < 0.001$, Mann-Whitney U test).}
     \label{fig:statistical_testing_eda}
 \end{figure}
 
 \subsection{Analysis of Missing Data Patterns}
-The pattern of missing data was investigated as a potential source of information. Of the 161 initial features, 101 had missing values. Little's MCAR test strongly rejected the null hypothesis ($p \approx 0.0$), indicating the data were not Missing Completely At Random. A subsequent chi-square analysis revealed that the absence of 46 specific measurements was significantly associated with mortality ($p < 0.05$). The ten most significant associations are shown in Table~\ref{tab:missingness_assoc_eda}, highlighting that the lack of liver function and tissue injury tests was highly prognostic. This confirms that patterns of clinical data collection are themselves important predictors.
+The pattern of missing data was investigated as a potential source of information. Of the 161 initial features, 101 had missing values. Little's MCAR test strongly rejected the null hypothesis ($p \approx 0.0$), indicating the data were not Missing Completely At Random. A subsequent chi-square analysis revealed that the absence of 46 specific measurements was significantly associated with mortality ($p < 0.05$). The ten most significant associations are shown in Table~\ref{tab:missingness_assoc_eda}, highlighting that the absence of liver function and tissue injury tests was highly prognostic. These findings suggest that patterns of clinical data collection are themselves informative predictors of outcome.
 
 \begin{table}[htb!]
     \centering

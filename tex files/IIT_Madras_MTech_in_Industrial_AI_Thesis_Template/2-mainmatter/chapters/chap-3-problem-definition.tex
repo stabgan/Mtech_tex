@@ -2,7 +2,7 @@
 \label{chap:problem}
 
 \section{Clinical decision and scope}
-Sepsis–associated acute kidney injury (SA--AKI) constitutes a high–risk state coupling infection, shock physiology, and acute renal dysfunction. The \emph{decision point} is fixed: at the end of the first ICU day ($T_{\mathrm{obs}}{=}24$~h after ICU admission), the risk of in–hospital death is to be estimated for patients meeting SA--AKI criteria using only information available by $T_{\mathrm{obs}}$. The primary goal is to develop a predictive model that is both \emph{discriminative} and \emph{calibrated}. Two auxiliary objectives support this decision: (i) systematic \emph{exploratory data analysis} to discover clinical phenotypes in the early feature space, and (ii) \emph{time–to–event} modeling that translates the same early covariates into survival functions for \emph{time to death}. All cohort rules adhere to Sepsis--3 for sepsis and KDIGO for AKI, and reporting follows the TRIPOD statement.
+Sepsis–associated acute kidney injury (SA--AKI) constitutes a high–risk state coupling infection, shock physiology, and acute renal dysfunction. The \emph{decision point} is fixed: at the end of the first ICU day ($T_{\mathrm{obs}}{=}24$~h after ICU admission), the risk of in–hospital death is to be estimated for patients meeting SA--AKI criteria using only information available by $T_{\mathrm{obs}}$. The primary goal was to develop a predictive model that is both \emph{discriminative} and \emph{calibrated}. Two auxiliary objectives support this decision: (i) systematic \emph{exploratory data analysis} to discover clinical phenotypes in the early feature space, and (ii) \emph{time–to–event} modeling that translates the same early covariates into survival functions for \emph{time to death}. All cohort rules adhere to Sepsis--3 for sepsis and KDIGO for AKI, and reporting follows the TRIPOD statement.
 
 \noindent\textbf{Out of scope.} This study does not estimate causal treatment effects or recommend specific therapies. The problem is predictive; models summarize risk conditional on the information set $\mathcal{I}(T_{\mathrm{obs}})$.
 
@@ -75,10 +75,10 @@ For the final selected model ($f_{\theta}$), feature contributions are explained
 \section{Problem 3 (Survival): Early–Covariate Time to Death}
 Using the same T0--T24 covariates, the \emph{time to in–hospital death} is modeled with right censoring at hospital discharge. For the event time data $(T^{\mathrm{death}},\delta^{\mathrm{death}})$, the conditional hazard function $h(t\mid x)$ is estimated via:
 \begin{itemize}
-  \item \textbf{Cox Proportional Hazards (PH):} A semi-parametric model specified as $h(t\mid x)=h_0(t)\exp\{\beta^\top x\}$, implemented with the `lifelines` library. Proportional hazards assumptions are checked.
+  \item \textbf{Cox Proportional Hazards (PH):} A semi-parametric model specified as $h(t\mid x)=h_0(t)\exp\{\beta^\top x\}$, implemented with the \texttt{lifelines} library. Proportional hazards assumptions are checked.
   \item \textbf{DeepSurv:} A neural network-based Cox model where $h(t\mid x)=h_0(t)\exp\{g_{\psi}(x)\}$, with $g_\psi$ parameterized by a custom deep network implemented in PyTorch.
 \end{itemize}
-Performance is evaluated using Harrell’s $C$–index, time-dependent AUC, calibration plots at clinically relevant horizons (e.g., 7, 14, 28 days), and Kaplan-Meier curve stratification by predicted risk.
+Performance is evaluated using Harrell’s $C$–index, time-dependent AUC, calibration plots at clinically relevant horizons (e.g., 90, 180, 365 hours), and Kaplan-Meier curve stratification by predicted risk.
 
 \section{Evaluation protocol}
 For the classification task, a one–time 80/20 train–test split is used. An internal validation split is carved from the training set for model selection, calibration, and thresholding. The frozen pipeline is then applied once to the test set. For the survival task, the same patient partitions are used. Primary test metrics for the classifier include AUROC, F1-score, precision, and recall. For the survival models, primary metrics are Harrell’s $C$-index, calibration, and risk stratification confirmed by the log-rank test.

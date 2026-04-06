@@ -63,24 +63,24 @@ The planned evaluation seeks to capture various dimensions of performance, with 
 
     \item \textbf{Recall@\emph{k}}
     \begin{equation}\label{eq:p1:recall_at_k}
-        \text{Recall@k} = 
-        \frac{\text{Number of times the correct code is in the top } k \text{ predictions}}
-        {\text{Total number of samples}}
+        \text{Recall@}k = 
+        \frac{|\{\text{correct code in top-}k\}|}
+        {N_{\text{samples}}}
     \end{equation}
     This metric indicates the fraction of cases in which the true codes appear among the top $k$ predictions, a setting relevant in coding-assistance systems that present a limited list of suggestions.
 
     \item \textbf{Exact Match Ratio}
     \begin{equation}\label{eq:p1:exact_match}
         \text{Exact Match} = 
-        \frac{\text{Number of notes for which the full set of codes is correctly predicted}}
-        {\text{Total number of notes}}
+        \frac{|\{\text{notes with all codes correct}\}|}
+        {N_{\text{notes}}}
     \end{equation}
     This stricter criterion gauges the extent to which all predicted codes align perfectly with the ground truth set for each note.
 
     \item \textbf{Never-Predicted Rate}
     \begin{equation}\label{eq:p1:never_predicted}
         \text{Never-Predicted Rate} = 
-        \frac{\text{Number of codes that are never predicted by the model}}{C}
+        \frac{|\{\text{codes never predicted}\}|}{C}
     \end{equation}
     This measure highlights whether any codes---particularly rare ones---are completely ignored.
 \end{enumerate}

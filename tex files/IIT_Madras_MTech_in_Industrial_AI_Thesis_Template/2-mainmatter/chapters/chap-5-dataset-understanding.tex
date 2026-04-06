@@ -232,7 +232,7 @@ Figure~\ref{fig:data-universe} positions the raw inputs within MIMIC--IV (core, 
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\linewidth][c]{\includegraphics[width=1.1\linewidth]{dataset_images/1_data_universe.pdf}}
+    \makebox[\linewidth][c]{\includegraphics[width=\linewidth]{dataset_images/1_data_universe.pdf}}
     \caption{MIMIC--IV data universe leveraged in this study.}
     \label{fig:data-universe}
 \end{figure}
@@ -242,7 +242,7 @@ To avoid brittle, hard-coded drug lists, clinical concepts were mapped across te
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\linewidth][c]{\includegraphics[width=1.1\linewidth]{dataset_images/7_ontology_crosswalk}}
+    \makebox[\linewidth][c]{\includegraphics[width=\linewidth]{dataset_images/7_ontology_crosswalk}}
     \caption{Ontology crosswalk linking SNOMED~CT $\rightarrow$ UMLS CUIs $\rightarrow$ RxNorm ingredients, with ATC cross-reference.}
     \label{fig:ontology-crosswalk}
 \end{figure}
@@ -252,7 +252,7 @@ A CONSORT-style reduction from all ICU stays to the final analysis cohort was fo
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\linewidth][c]{\includegraphics[width=1.05\linewidth]{dataset_images/8_consort_flow}}
+    \makebox[\linewidth][c]{\includegraphics[width=\linewidth]{dataset_images/8_consort_flow}}
     \caption{CONSORT-style flow of cohort construction with key exclusions.}
     \label{fig:consort}
 \end{figure}
@@ -282,7 +282,7 @@ All predictors used in modeling are restricted to the first 24\,h after ICU admi
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\linewidth][c]{\includegraphics[width=1.1\linewidth]{dataset_images/6_final_timeline}}
+    \makebox[\linewidth][c]{\includegraphics[width=\linewidth]{dataset_images/6_final_timeline}}
     \caption{Illustrative patient journey with T0--T24 feature window, infection window, Sepsis onset, and AKI onset; the SA--AKI link is $\pm$48\,h around Sepsis onset.}
     \label{fig:timeline}
 \end{figure}
@@ -329,7 +329,7 @@ A foundational step of the EDA was to statistically validate the cohort and the 
 
 \begin{figure}[htb!]
     \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{preprocessing_images/statistical_testing.png}}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{preprocessing_images/statistical_testing.png}}
     \caption{Statistical significance of key clinical variables between survivor and non-survivor groups, confirming that the selected features carry a strong prognostic signal ($p < 0.001$, Mann-Whitney U test).}
     \label{fig:statistical_testing_eda}
 \end{figure}

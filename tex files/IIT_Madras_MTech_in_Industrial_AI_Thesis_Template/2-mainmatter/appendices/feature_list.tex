@@ -36,7 +36,7 @@ All fractions were bounded to $[0,1]$ with the analyte–specific $n$ as denomin
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Endpoint and timing variables present in file.}
 \label{app:tab-endpoint-times}
-\begin{tabular}{P{0.36\linewidth} P{0.52\linewidth} P{0.08\linewidth}}
+\begin{tabular}{P{0.34\linewidth} P{0.50\linewidth} P{0.08\linewidth}}
 \toprule
 \textbf{Column} & \textbf{Meaning (concise)} & \textbf{Unit}\\
 \midrule
@@ -44,7 +44,7 @@ Death & In-hospital death indicator (\textbf{1=death}, 0=censored). & ---\\
 Time to death & Hours from ICU admit to death / last alive (censored). & h\\
 Time to AKI onset & Hours to AKI onset (KDIGO). & h\\
 Time to sepsis onset & Hours to first Sepsis--3 flag. & h\\
-Time to mechanical ventilator start & Hours to first invasive ventilation. & h\\
+Time to MV start & Hours to first invasive ventilation. & h\\
 Time to vasopressor start & Hours to first vasopressor. & h\\
 Age & Age at ICU admission. & y\\
 Gender & Biological sex (\textbf{1=male}, 0=female). & ---\\
@@ -59,7 +59,7 @@ AKI trigger & Trigger type (\textbf{1=creatinine}, 0=urine output). & ---\\
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Therapy/exposure flags (definitions mirror Table~\ref{tab:therapies-prev}).}
 \label{app:tab-therapies}
-\begin{tabular}{P{0.44\linewidth} P{0.44\linewidth} P{0.08\linewidth}}
+\begin{tabular}{P{0.40\linewidth} P{0.46\linewidth} P{0.08\linewidth}}
 \toprule
 \textbf{Column} & \textbf{Meaning (concise)} & \textbf{Unit}\\
 \midrule
@@ -73,30 +73,30 @@ Baseline creatinine estimated flag & Baseline creatinine was estimated (vs.\ obs
 
 \vspace{0.75\baselineskip}
 \begin{table}[t]\centering
-{\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
+{\footnotesize\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{4pt}%
 \caption{Charlson comorbidity flags (1/0) and prevalence in cohort.}
 \label{app:tab-charlson}
-\begin{tabular}{P{0.40\linewidth} P{0.42\linewidth} P{0.14\linewidth}}
+\begin{tabular}{P{0.36\linewidth} P{0.38\linewidth} P{0.18\linewidth}}
 \toprule
 \textbf{Column} & \textbf{Meaning (concise)} & \textbf{Prevalence}\\
 \midrule
-Myocardial infarction flag        & History of myocardial infarction.                      & 12.8\% (1{,}282/10{,}036)\\
-Congestive heart failure flag     & Congestive heart failure.                              & 11.8\% (1{,}187/10{,}036)\\
-Peripheral vascular disease flag  & Peripheral vascular disease.                           & 7.9\% (789/10{,}036)\\
-Cerebrovascular disease flag      & Stroke or TIA.                                         & 9.7\% (975/10{,}036)\\
-Dementia flag                     & Dementia.                                              & 4.1\% (412/10{,}036)\\
-Chronic pulmonary disease flag    & Chronic pulmonary disease (e.g., COPD).                & 14.3\% (1{,}440/10{,}036)\\
-Rheumatic / connective tissue flag& Connective tissue disease.                             & 2.1\% (214/10{,}036)\\
-Peptic ulcer disease flag         & Peptic ulcer disease.                                  & 2.6\% (256/10{,}036)\\
-Liver disease (mild) flag         & Mild liver disease.                                    & 10.4\% (1{,}043/10{,}036)\\
-Diabetes (no complications) flag  & Diabetes without chronic complications.                & 18.6\% (1{,}866/10{,}036)\\
-Diabetes with complications flag  & Diabetes with end-organ complications.                 & 9.3\% (935/10{,}036)\\
-Renal disease flag                & Moderate--severe chronic kidney disease.               & 14.2\% (1{,}421/10{,}036)\\
-Hemiplegia/paraplegia flag        & Hemiplegia or paraplegia.                              & 3.5\% (349/10{,}036)\\
-Cancer (no metastasis) flag       & Solid tumor within 5\,y, no metastasis.                & 8.9\% (894/10{,}036)\\
-Metastatic cancer flag            & Metastatic solid tumor.                                & 3.9\% (392/10{,}036)\\
-HIV/AIDS flag                     & HIV/AIDS.                                              & 0.4\% (36/10{,}036)\\
-Liver disease (moderate/severe) flag & Moderate or severe liver disease.                    & 6.5\% (656/10{,}036)\\
+MI flag        & History of myocardial infarction.                      & 12.8\% (1,282/10,036)\\
+CHF flag     & Congestive heart failure.                              & 11.8\% (1,187/10,036)\\
+PVD flag  & Peripheral vascular disease.                           & 7.9\% (789/10,036)\\
+CVD flag      & Stroke or TIA.                                         & 9.7\% (975/10,036)\\
+Dementia flag                     & Dementia.                                              & 4.1\% (412/10,036)\\
+Chronic pulm.\ disease flag    & Chronic pulmonary disease (e.g., COPD).                & 14.3\% (1,440/10,036)\\
+Rheumatic / CT flag& Connective tissue disease.                             & 2.1\% (214/10,036)\\
+Peptic ulcer flag         & Peptic ulcer disease.                                  & 2.6\% (256/10,036)\\
+Liver disease (mild) flag         & Mild liver disease.                                    & 10.4\% (1,043/10,036)\\
+Diabetes (uncomplicated) flag  & Diabetes without chronic complications.                & 18.6\% (1,866/10,036)\\
+Diabetes with complications flag  & Diabetes with end-organ complications.                 & 9.3\% (935/10,036)\\
+Renal disease flag                & Moderate--severe CKD.               & 14.2\% (1,421/10,036)\\
+Hemiplegia/paraplegia flag        & Hemiplegia or paraplegia.                              & 3.5\% (349/10,036)\\
+Cancer (no metastasis) flag       & Solid tumor within 5\,y, no metastasis.                & 8.9\% (894/10,036)\\
+Metastatic cancer flag            & Metastatic solid tumor.                                & 3.9\% (392/10,036)\\
+HIV/AIDS flag                     & HIV/AIDS.                                              & 0.4\% (36/10,036)\\
+Liver disease (mod/sev) flag & Moderate or severe liver disease.                    & 6.5\% (656/10,036)\\
 Charlson total                    & Sum of all Charlson flags (points).                    & points\\
 \bottomrule
 \end{tabular}}
@@ -107,16 +107,16 @@ Charlson total                    & Sum of all Charlson flags (points).         
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Vital-sign base names; day-1 statistics derived via suffixes where applicable.}
 \label{app:tab-vitals}
-\begin{tabular}{P{0.40\linewidth} P{0.42\linewidth} P{0.12\linewidth}}
+\begin{tabular}{P{0.36\linewidth} P{0.42\linewidth} P{0.14\linewidth}}
 \toprule
 \textbf{Base name} & \textbf{Meaning (concise)} & \textbf{Unit}\\
 \midrule
 Heart rate & Day-1 aggregates (median, IQR, range, first/last, delta, slope, AUC, $n$). & beats/min\\
-Systolic blood pressure & Systolic arterial blood pressure (non-/invasive). & mmHg\\
-Diastolic blood pressure & Diastolic arterial blood pressure (non-/invasive). & mmHg\\
+Systolic BP & Systolic arterial blood pressure (non-/invasive). & mmHg\\
+Diastolic BP & Diastolic arterial blood pressure (non-/invasive). & mmHg\\
 Mean arterial pressure & Computed or recorded MAP. & mmHg\\
-Respiratory rate & Respiratory rate. & breaths/min\\
-Oxygen saturation & Peripheral oxygen saturation (pulse oximetry). & \%\\
+Respiratory rate & Respiratory rate. & br/min\\
+Oxygen saturation & Peripheral SpO$_2$ (pulse oximetry). & \%\\
 ShockIndex & Derived ratio HR/SBP; higher reflects relative hypotension. & ---\\
 \bottomrule
 \end{tabular}}
@@ -127,14 +127,14 @@ ShockIndex & Derived ratio HR/SBP; higher reflects relative hypotension. & ---\\
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Fluid balance and urine output features.}
 \label{app:tab-fluids-uo}
-\begin{tabular}{P{0.46\linewidth} P{0.40\linewidth} P{0.10\linewidth}}
+\begin{tabular}{P{0.42\linewidth} P{0.42\linewidth} P{0.10\linewidth}}
 \toprule
 \textbf{Column} & \textbf{Meaning (concise)} & \textbf{Unit}\\
 \midrule
-Fluid balance 24\,h (mL) & Net inputs minus outputs in first 24\,h (all sources). & mL\\
-Fluid balance 24\,h per kg & Weight-indexed net fluid balance (day~1). & mL/kg\\
+Fluid balance 24\,h & Net inputs minus outputs in first 24\,h (all sources). & mL\\
+Fluid balance 24\,h/kg & Weight-indexed net fluid balance (day~1). & mL/kg\\
 Urine output total 24\,h & Total urine in first 24\,h. & mL\\
-Urine output total 24\,h per kg & Weight-indexed urine output (day~1). & mL/kg\\
+Urine output 24\,h/kg & Weight-indexed urine output (day~1). & mL/kg\\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -144,7 +144,7 @@ Urine output total 24\,h per kg & Weight-indexed urine output (day~1). & mL/kg\\
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Laboratory and gas-exchange base names (A--M).}
 \label{app:tab-labs-a-m}
-\begin{tabular}{P{0.38\linewidth} P{0.48\linewidth} P{0.10\linewidth}}
+\begin{tabular}{P{0.36\linewidth} P{0.46\linewidth} P{0.10\linewidth}}
 \toprule
 \textbf{Base name} & \textbf{Meaning (concise)} & \textbf{Unit}\\
 \midrule
@@ -172,7 +172,7 @@ LDH & Lactate dehydrogenase. & U/L\\
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Laboratory and gas-exchange base names (N--Z).}
 \label{app:tab-labs-n-z}
-\begin{tabular}{P{0.38\linewidth} P{0.48\linewidth} P{0.10\linewidth}}
+\begin{tabular}{P{0.36\linewidth} P{0.46\linewidth} P{0.10\linewidth}}
 \toprule
 \textbf{Base name} & \textbf{Meaning (concise)} & \textbf{Unit}\\
 \midrule
@@ -198,7 +198,7 @@ White blood cell count & WBC. & $10^{9}$/L\\
 {\small\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{6pt}%
 \caption{Suffix legend for time-series features.}
 \label{app:tab-suffixes}
-\begin{tabular}{P{0.18\linewidth} P{0.66\linewidth} P{0.10\linewidth}}
+\begin{tabular}{P{0.16\linewidth} P{0.66\linewidth} P{0.10\linewidth}}
 \toprule
 \textbf{Suffix} & \textbf{Definition (first 24\,h)} & \textbf{Unit}\\
 \midrule

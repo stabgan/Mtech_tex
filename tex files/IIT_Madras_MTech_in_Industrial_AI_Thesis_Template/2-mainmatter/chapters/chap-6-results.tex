@@ -101,8 +101,8 @@ The final, calibrated model was then applied to the unseen held-out test set. Th
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.5\textwidth]{ml_images/confusion_matrix.png}\hfill
-    \includegraphics[width=0.5\textwidth]{ml_images/roc_curve.png}
+    \includegraphics[width=0.48\textwidth]{ml_images/confusion_matrix.png}\hfill
+    \includegraphics[width=0.48\textwidth]{ml_images/roc_curve.png}
     \caption{(\textbf{a}) Confusion matrix of the final model on the test set at the optimal threshold (0.2704). (\textbf{b}) ROC curve for the final model on the test set, showing an AUC of 0.75.}
     \label{fig:confusion_matrix_roc}
 \end{figure}
@@ -114,7 +114,7 @@ The most influential feature was the \texttt{sofa\_total\_24hr} score, a global 
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.8\textwidth]{ml_images/shap_beeswarm.png}
+    \includegraphics[width=0.75\textwidth]{ml_images/shap_beeswarm.png}
     \caption{SHAP beeswarm summary plot for the top 20 features. Each dot represents a patient. The feature's value is indicated by color (red=high, blue=low), and its impact on the mortality prediction is shown on the x-axis.}
     \label{fig:shap_beeswarm}
 \end{figure}
@@ -146,7 +146,8 @@ Recent studies on SA--AKI mortality using MIMIC--IV have reported ROC--AUC value
     \centering
     \caption{Methodological comparison with representative prior SA--AKI mortality studies.}
     \label{tab:comparison_prior}
-    \small
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
     \begin{tabular}{lcccc}
         \toprule
         \textbf{Criterion} & \textbf{This work} & \textbf{Chen (2025)} & \textbf{Li (2023)} & \textbf{Hu (2021)} \\

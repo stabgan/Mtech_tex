@@ -147,20 +147,20 @@
 \contentsline {subsection}{\numberline {6.1.2}MinHash-Based Similarity Detection}{90}{subsection.6.1.2}%
 \contentsline {subsection}{\numberline {6.1.3}Key Observations and Challenges}{90}{subsection.6.1.3}%
 \contentsline {subsection}{\numberline {6.1.4}Rare Disease Co-Occurrence Pipeline}{91}{subsection.6.1.4}%
-\contentsline {paragraph}{\nonumberline Note on Completion Status.}{92}{paragraph*.86}%
+\contentsline {paragraph}{\nonumberline Note on Completion Status.}{91}{paragraph*.86}%
 \contentsline {section}{\numberline {6.2}Problem 2: SA-AKI Mortality Prediction Results}{92}{section.6.2}%
 \contentsline {subsection}{\numberline {6.2.1}Supervised Mortality Prediction}{92}{subsection.6.2.1}%
 \contentsline {subsubsection}{\nonumberline Model Benchmarking and Selection}{92}{subsubsection*.87}%
 \contentsline {subsubsection}{\nonumberline Final Model Performance on the Test Set}{93}{subsubsection*.89}%
 \contentsline {subsubsection}{\nonumberline Model Interpretability with SHAP}{94}{subsubsection*.92}%
-\contentsline {subsubsection}{\nonumberline Why LightGBM Outperforms Other Model Classes}{95}{subsubsection*.94}%
+\contentsline {subsubsection}{\nonumberline Why LightGBM Outperforms Other Model Classes}{96}{subsubsection*.94}%
 \contentsline {subsubsection}{\nonumberline Evidence for Trustworthiness and Clinical Credibility}{97}{subsubsection*.95}%
 \contentsline {subsubsection}{\nonumberline Comparison with Prior Work and the Case for a Realistic Benchmark}{98}{subsubsection*.96}%
 \contentsline {subsubsection}{\nonumberline Limitations: External Validation and Dataset Scope}{99}{subsubsection*.98}%
 \contentsline {subsection}{\numberline {6.2.2}Time-to-Event (Survival) Analysis}{100}{subsection.6.2.2}%
 \contentsline {subsubsection}{\nonumberline Cox Proportional Hazards Model}{100}{subsubsection*.99}%
 \contentsline {subsubsection}{\nonumberline DeepSurv Model}{101}{subsubsection*.102}%
-\contentsline {subsubsection}{\nonumberline Synthesis of Survival Analysis}{102}{subsubsection*.106}%
+\contentsline {subsubsection}{\nonumberline Synthesis of Survival Analysis}{103}{subsubsection*.106}%
 \contentsline {chapter}{\numberline {\MakeUppercase []{Chapter~7}}\MakeUppercase []{Conclusions and Future Work}}{105}{chapter.7}%
 \contentsline {section}{\numberline {7.1}Summary of Problem 1: ICD Code Prediction}{105}{section.7.1}%
 \contentsline {section}{\numberline {7.2}Summary of Problem 2: SA-AKI Mortality Prediction}{106}{section.7.2}%

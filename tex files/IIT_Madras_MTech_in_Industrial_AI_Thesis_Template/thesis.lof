@@ -25,12 +25,12 @@
 \contentsline {figure}{\numberline {5.18}{\ignorespaces Top 30 features with the strongest positive (red) and negative (blue) correlation with in-hospital mortality in the training set.}}{88}{figure.caption.85}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {6.1}{\ignorespaces (\textbf {a}) Confusion matrix of the final model on the test set at the optimal threshold (0.2704). (\textbf {b}) ROC curve for the final model on the test set, showing an AUC of 0.75.}}{94}{figure.caption.91}%
-\contentsline {figure}{\numberline {6.2}{\ignorespaces SHAP beeswarm summary plot for the top 20 features. Each dot represents a patient. The feature's value is indicated by color (red=high, blue=low), and its impact on the mortality prediction is shown on the x-axis.}}{96}{figure.caption.93}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces SHAP beeswarm summary plot for the top 20 features. Each dot represents a patient. The feature's value is indicated by color (red=high, blue=low), and its impact on the mortality prediction is shown on the x-axis.}}{95}{figure.caption.93}%
 \contentsline {figure}{\numberline {6.3}{\ignorespaces Forest plot of hazard ratios for the top 20 predictors in the final CoxPH model. Values to the right of the dashed line (HR > 1) indicate an increased risk of death.}}{101}{figure.caption.100}%
 \contentsline {figure}{\numberline {6.4}{\ignorespaces Kaplan-Meier survival curves for the test set, stratified by risk quartiles predicted by the CoxPH model, demonstrating effective risk stratification.}}{102}{figure.caption.101}%
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Kaplan-Meier survival curves for the test set, stratified by risk tertiles predicted by the DeepSurv model.}}{103}{figure.caption.103}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Kaplan-Meier survival curves for the test set, stratified by risk tertiles predicted by the DeepSurv model.}}{102}{figure.caption.103}%
 \contentsline {figure}{\numberline {6.6}{\ignorespaces Calibration plots for the DeepSurv model at 90, 180, and 365 hours.}}{103}{figure.caption.104}%
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Decision Curve Analysis for the DeepSurv model at a 180-hour horizon, demonstrating positive net benefit across a range of clinically relevant risk thresholds.}}{104}{figure.caption.105}%
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Decision Curve Analysis for the DeepSurv model at a 180-hour horizon, demonstrating positive net benefit across a range of clinically relevant risk thresholds.}}{103}{figure.caption.105}%
 \addvspace {10\p@ }
 \def \@chapapp {\appendixname }
 \addvspace {10\p@ }

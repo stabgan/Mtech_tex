@@ -9,6 +9,12 @@
 \renewcommand\textupper[1]{\texorpdfstring{\MakeUppercase{#1}}{#1}}
 \usepackage{xcolor}
 \usepackage{array,booktabs}
+
+% Allow URLs to break at any character to prevent margin overflow
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+\sloppy
 \usepackage{pgfgantt}
 \usepackage{float}
 
